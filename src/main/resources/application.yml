@@ -17,3 +17,8 @@ spring:
         format_sql: true
         use_sql_comments: true
         show_sql: true
+
+jwt:
+  access: 1800000
+  refresh: 259200000
+  secret: ${JWT_SECRET}
