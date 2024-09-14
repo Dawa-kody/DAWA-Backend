@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SigninResponse {
+public class TokenResponse {
     private String access;
     private String refresh;
 }

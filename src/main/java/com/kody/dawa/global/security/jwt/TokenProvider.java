@@ -1,5 +1,5 @@
 package com.kody.dawa.global.security.jwt;
-import com.kody.dawa.domain.auth.presentation.dto.response.SigninResponse;
+import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
 import com.kody.dawa.global.entity.TokenType;
 import com.kody.dawa.global.exception.HttpException;
 import io.jsonwebtoken.*;
@@ -26,8 +26,8 @@ public class TokenProvider {
     @Value("${jwt.refresh}")
     private Long refresh;
 
-    public SigninResponse generateTokenSet(Long id){
-        return new SigninResponse(
+    public TokenResponse generateTokenSet(Long id){
+        return new TokenResponse(
                 generateToken(id, TokenType.ACCESS),
                 generateToken(id, TokenType.REFRESH)
         );
