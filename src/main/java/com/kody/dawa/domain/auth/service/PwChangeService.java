@@ -1,2 +1,3 @@
-package com.kody.dawa.domain.auth.service;public interface PwChangeService {
+package com.kody.dawa.domain.auth.service;
+public interface PwChangeService {
 }

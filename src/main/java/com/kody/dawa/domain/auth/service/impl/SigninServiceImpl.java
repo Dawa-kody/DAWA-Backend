@@ -7,6 +7,7 @@ import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.TokenProvider;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ public class SigninServiceImpl implements SigninService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    @Transactional
     public TokenResponse execute(SigninRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));

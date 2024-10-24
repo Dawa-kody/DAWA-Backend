@@ -1,5 +1,7 @@
 package com.kody.dawa.domain.auth.presentation.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignupRequest {
     @NotBlank
-    private String role;
-
-    @NotBlank
+    @Email
+    @Column()
     private String email;
 
     @NotBlank
@@ -26,4 +27,7 @@ public class SignupRequest {
 
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String schoolNumber;
 }

@@ -1,8 +1,12 @@
 package com.kody.dawa.domain.auth.presentation;
 
+import com.kody.dawa.domain.auth.entity.AuthCode;
+import com.kody.dawa.domain.auth.presentation.dto.request.AuthCodeRequest;
+import com.kody.dawa.domain.auth.presentation.dto.request.PwChangeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.SigninRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupRequest;
 import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
+import com.kody.dawa.domain.auth.service.MailSendService;
 import com.kody.dawa.domain.auth.service.RefreshService;
 import com.kody.dawa.domain.auth.service.SigninService;
 import com.kody.dawa.domain.auth.service.SignupService;
@@ -12,13 +16,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final SignupService signupService;
     private final SigninService signinService;
     private final RefreshService refreshService;
+    private final MailSendService mailSendService;
 
     @PostMapping("/signup")
     public ResponseEntity<TokenResponse> signup(@RequestBody @Valid SignupRequest request) {
@@ -38,5 +44,15 @@ public class AuthController {
         String refreshToken = request.getHeader("refresh");
         TokenResponse response = refreshService.execute(accessToken, refreshToken);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping( "/mailsend")
+    public void mailSend(@RequestBody @Valid AuthCodeRequest request){
+        mailSendService.execute(request);
+    }
+
+    @PostMapping("/pwchange")
+    public void mailCheck(@RequestBody @Valid PwChangeRequest request) {
+
     }
 }

@@ -7,6 +7,7 @@ import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.entity.TokenType;
 import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.TokenProvider;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class RefreshServiceImpl implements RefreshService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
+    @Transactional
     public TokenResponse execute(String access, String refresh){
         access = access.substring(7);
         refresh = refresh.substring(7);
