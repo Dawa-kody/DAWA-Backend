@@ -6,13 +6,11 @@ import com.kody.dawa.domain.auth.presentation.dto.request.PwChangeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.SigninRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupRequest;
 import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
-import com.kody.dawa.domain.auth.service.MailSendService;
-import com.kody.dawa.domain.auth.service.RefreshService;
-import com.kody.dawa.domain.auth.service.SigninService;
-import com.kody.dawa.domain.auth.service.SignupService;
+import com.kody.dawa.domain.auth.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +23,7 @@ public class AuthController {
     private final SigninService signinService;
     private final RefreshService refreshService;
     private final MailSendService mailSendService;
+    private final PwChangeService pwChangeService;
 
     @PostMapping("/signup")
     public ResponseEntity<TokenResponse> signup(@RequestBody @Valid SignupRequest request) {
@@ -53,6 +52,6 @@ public class AuthController {
 
     @PostMapping("/pwchange")
     public void mailCheck(@RequestBody @Valid PwChangeRequest request) {
-
+        pwChangeService.execute(request);
     }
 }
