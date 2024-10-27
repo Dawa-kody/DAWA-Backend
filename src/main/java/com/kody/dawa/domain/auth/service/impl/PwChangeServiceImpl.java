@@ -9,11 +9,8 @@ import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.service.GetUser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.UUID;
 
 @Service
@@ -32,7 +29,7 @@ public class PwChangeServiceImpl implements PwChangeService {
         }
 
         if (requestCode.equals(findCode.getCode())) {
-            updatePassword(request.getPassword());
+            updatePassword(request.getPassword(), request.getEmail());
             deleteByEmail(request.getEmail());
         } else {
             throw new RuntimeException("잘못된 인증 코드입니다.");
@@ -43,8 +40,8 @@ public class PwChangeServiceImpl implements PwChangeService {
         authCodeRepository.deleteByEmail(email);
     }
 
-    private void updatePassword(String newPassword) {
-        User user = getUser.getCurrentUser();
+    private void updatePassword(String newPassword, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일의 사용자가 존재하지 않습니다."));
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
