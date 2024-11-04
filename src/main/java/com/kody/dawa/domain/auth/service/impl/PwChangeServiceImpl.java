@@ -34,7 +34,6 @@ public class PwChangeServiceImpl implements PwChangeService {
         }
     }
 
-
     private void updatePassword(String newPassword, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일의 사용자가 존재하지 않습니다."));
         user.setPassword(passwordEncoder.encode(newPassword));
