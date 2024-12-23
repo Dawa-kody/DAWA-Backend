@@ -25,7 +25,9 @@ public class PwChangeServiceImpl implements PwChangeService {
         if (findCode == null) {
             throw new RuntimeException("인증 코드가 존재하지 않습니다.");
         }
-
+        if (request.getPassword() == null) {
+            throw new RuntimeException("새 비밀번호가 존재하지 않습니다.");
+        }
         if (requestCode.equals(findCode.getCode())) {
             updatePassword(request.getPassword(), request.getEmail());
             authCodeRepository.deleteByEmail(request.getEmail());

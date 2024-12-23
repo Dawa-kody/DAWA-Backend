@@ -1,6 +1,5 @@
 package com.kody.dawa.domain.auth.presentation;
 
-import com.kody.dawa.domain.auth.entity.AuthCode;
 import com.kody.dawa.domain.auth.presentation.dto.request.AuthCodeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.PwChangeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.SigninRequest;
@@ -10,11 +9,8 @@ import com.kody.dawa.domain.auth.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor

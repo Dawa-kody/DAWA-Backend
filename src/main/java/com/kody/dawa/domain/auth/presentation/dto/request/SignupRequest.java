@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class SignupRequest {
     @NotBlank
     @Email
-    @Column()
     private String email;
 
     @NotBlank
