@@ -1,8 +1,8 @@
 package com.kody.dawa.domain.visit.presentation;
 
-import com.kody.dawa.domain.visit.entity.VisitRecord;
 import com.kody.dawa.domain.visit.presentation.dto.request.VisitRecordRequest;
-import com.kody.dawa.domain.visit.presentation.dto.response.VisitRecordResponse;
+import com.kody.dawa.domain.visit.presentation.dto.response.MyVisitRecordResponse;
+import com.kody.dawa.domain.visit.presentation.dto.response.VisitRecordsResponse;
 import com.kody.dawa.domain.visit.service.VisitRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,12 @@ public class VisitRecordController {
     }
 
     @GetMapping
-    public List<VisitRecordResponse> getMyRecords() {
+    public List<MyVisitRecordResponse> getMyRecords() {
         return visitRecordService.getMyVisitRecords();
     }
 
     @GetMapping("/allRecord")
-    public List<VisitRecordResponse> getAllRecord() {
+    public List<VisitRecordsResponse> getAllRecord() {
         return visitRecordService.getAllVisitRecords();
     }
 }

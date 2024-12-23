@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class VisitRecordResponse {
+public class VisitRecordsResponse {
     private String name;
     private String content;
-    private LocalDateTime createdAt;
+    private String formattedDate;
+    private String dayOfWeek;
 }
