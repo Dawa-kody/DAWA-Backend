@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
+import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.user.util.StringListConverter;
 import com.kody.dawa.domain.visit.entity.VisitRecord;
 import jakarta.persistence.*;
@@ -47,4 +48,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Questionnaire> questionnaire = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Rental> rentals = new HashSet<>();
 }

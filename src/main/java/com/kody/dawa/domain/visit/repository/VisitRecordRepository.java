@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface VisitRecordRepository extends JpaRepository<VisitRecord, Long> {
     @Query(value = "SELECT v FROM VisitRecord v ORDER BY v.createAt DESC")
     List<VisitRecord> findVisitRecordsByOrderBycreateAtDesc(User user);
-    List<VisitRecord> findAll();
+    @Query(value = "SELECT v FROM VisitRecord v ORDER BY v.createAt DESC")
+    List<VisitRecord> findVisitRecordsByOrderBycreateAtDesc();
 
 }

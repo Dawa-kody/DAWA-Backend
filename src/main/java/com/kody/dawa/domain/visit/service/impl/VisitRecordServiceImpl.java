@@ -42,7 +42,7 @@ public class VisitRecordServiceImpl implements VisitRecordService {
     }
 
     public List<VisitRecordsResponse> getAllVisitRecords() {
-        List<VisitRecord> visitRecords =visitRecordRepository.findAll();
+        List<VisitRecord> visitRecords =visitRecordRepository.findVisitRecordsByOrderBycreateAtDesc();
         return visitRecords.stream()
                 .map(visitRecord -> VisitRecordsResponse.builder()
                         .content(visitRecord.getContent())
