@@ -2,7 +2,7 @@ package com.kody.dawa.domain.visit.service.impl;
 
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.visit.entity.VisitRecord;
-import com.kody.dawa.domain.visit.presentation.dto.request.VisitRecordRequest;
+import com.kody.dawa.domain.visit.presentation.dto.request.VisitMyRecordRequest;
 import com.kody.dawa.domain.visit.presentation.dto.response.MyVisitRecordResponse;
 import com.kody.dawa.domain.visit.presentation.dto.response.VisitRecordsResponse;
 import com.kody.dawa.domain.visit.repository.VisitRecordRepository;
@@ -20,7 +20,7 @@ public class VisitRecordServiceImpl implements VisitRecordService {
     private final VisitRecordRepository visitRecordRepository;
     private final GetUser getUser;
 
-    public void createVisit(VisitRecordRequest request) {
+    public void createMyVisit(VisitMyRecordRequest request) {
         User user = getUser.getCurrentUser();
         VisitRecord visitRecord = VisitRecord.builder()
                 .content(request.getContent())

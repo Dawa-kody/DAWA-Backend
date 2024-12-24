@@ -1,4 +1,5 @@
 package com.kody.dawa.domain.user.repository;
+import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     boolean existsUserByEmail(String email);
+
+    Optional<User> findBySchoolNumber(String studentNumber);
 }

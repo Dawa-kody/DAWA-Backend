@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitRecordRequest {
+public class VisitMyRecordRequest {
     private String content;
 }

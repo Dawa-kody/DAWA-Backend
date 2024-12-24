@@ -1,6 +1,6 @@
 package com.kody.dawa.domain.visit.presentation;
 
-import com.kody.dawa.domain.visit.presentation.dto.request.VisitRecordRequest;
+import com.kody.dawa.domain.visit.presentation.dto.request.VisitMyRecordRequest;
 import com.kody.dawa.domain.visit.presentation.dto.response.MyVisitRecordResponse;
 import com.kody.dawa.domain.visit.presentation.dto.response.VisitRecordsResponse;
 import com.kody.dawa.domain.visit.service.VisitRecordService;
@@ -16,15 +16,13 @@ public class VisitRecordController {
     private final VisitRecordService visitRecordService;
 
     @PostMapping("/write")
-    public void createRecord(@RequestBody VisitRecordRequest request) {
-        visitRecordService.createVisit(request);
+    public void createRecord(@RequestBody VisitMyRecordRequest request) {
+        visitRecordService.createMyVisit(request);
     }
-
     @GetMapping
     public List<MyVisitRecordResponse> getMyRecords() {
         return visitRecordService.getMyVisitRecords();
     }
-
     @GetMapping("/allRecord")
     public List<VisitRecordsResponse> getAllRecord() {
         return visitRecordService.getAllVisitRecords();
