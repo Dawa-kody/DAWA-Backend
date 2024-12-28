@@ -1,8 +1,5 @@
 package com.kody.dawa.domain.rental.service.impl;
 
-import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
-import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
-import com.kody.dawa.domain.questionnaire.repository.QuestionnaireRepository;
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
@@ -11,9 +8,6 @@ import com.kody.dawa.domain.rental.repository.RentalRepository;
 import com.kody.dawa.domain.rental.service.RentalService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
-import com.kody.dawa.domain.visit.entity.VisitRecord;
-import com.kody.dawa.domain.visit.presentation.dto.response.MyVisitRecordResponse;
-import com.kody.dawa.domain.visit.presentation.dto.response.VisitRecordsResponse;
 import com.kody.dawa.global.service.GetUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +27,7 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = Rental.builder()
                 .user(user)
                 .count(request.getCount())
-                .isReturn(false)
+                .isRentaled(false)
                 .rental(request.getRental())
                 .build();
         rentalRepository.save(rental);
@@ -42,7 +36,7 @@ public class RentalServiceImpl implements RentalService {
     public void rentalCompleted(Long id) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("없음"));
-        rental.setReturn(true);
+        rental.setIsRentaled(true);
     }
 
     public List<MyRentalResponse> getMyRentals() {
@@ -53,7 +47,7 @@ public class RentalServiceImpl implements RentalService {
                         .count(rental.getCount())
                         .rental(rental.getRental())
                         .formattedDate(rental.getFormattedDate())
-                        .dayOfWeek(rental.getDayOfWeek())
+                        .isRentaled(rental.isRentaled())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -65,8 +59,8 @@ public class RentalServiceImpl implements RentalService {
                         .count(rental.getCount())
                         .rental(rental.getRental())
                         .name(rental.getUser().getName())
+                        .isRentaled(rental.isRentaled())
                         .formattedDate(rental.getFormattedDate())
-                        .dayOfWeek(rental.getDayOfWeek())
                         .build())
                 .collect(Collectors.toList());
     }

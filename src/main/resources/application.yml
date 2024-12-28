@@ -31,6 +31,6 @@ spring:
     port: '587'
 
 jwt:
-  access: 1800000
+  access: 99999999999999999
   refresh: 259200000
   secret: ${JWT_SECRET}

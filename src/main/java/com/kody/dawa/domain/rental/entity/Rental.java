@@ -32,9 +32,9 @@ public class Rental extends BaseTime {
 
     private String count;
 
-    private boolean isReturn;
+    private boolean isRentaled;
 
-    public void setReturn(boolean isReturn) {
-        this.isReturn = isReturn;
+    public void setIsRentaled(boolean isRentaled) {
+        this.isRentaled = isRentaled;
     }
 }

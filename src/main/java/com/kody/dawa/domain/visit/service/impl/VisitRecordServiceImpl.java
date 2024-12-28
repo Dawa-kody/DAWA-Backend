@@ -31,7 +31,7 @@ public class VisitRecordServiceImpl implements VisitRecordService {
 
     public List<MyVisitRecordResponse> getMyVisitRecords() {
         User user = getUser.getCurrentUser();
-        List<VisitRecord> visitRecords =visitRecordRepository.findVisitRecordsByOrderBycreateAtDesc(user);
+        List<VisitRecord> visitRecords =visitRecordRepository.findByUserIdOrderByCreateAtDesc(user.getId());
         return visitRecords.stream()
                 .map(visitRecord -> MyVisitRecordResponse.builder()
                             .content(visitRecord.getContent())
@@ -47,7 +47,6 @@ public class VisitRecordServiceImpl implements VisitRecordService {
                 .map(visitRecord -> VisitRecordsResponse.builder()
                         .content(visitRecord.getContent())
                         .name(visitRecord.getUser().getName())
-                        .name(visitRecord.getUser().getRoles().toString())
                         .formattedDate(visitRecord.getFormattedDate())
                         .dayOfWeek(visitRecord.getDayOfWeek())
                         .build())

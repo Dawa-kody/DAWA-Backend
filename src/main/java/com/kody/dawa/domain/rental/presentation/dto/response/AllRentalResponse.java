@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.rental.presentation.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AllRentalResponse {
     private String formattedDate;
-    private String dayOfWeek;
     private String count;
     private String rental;
     private String name;
+    private boolean isRentaled;
 }
