@@ -1,10 +1,7 @@
 package com.kody.dawa.domain.firstaid.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +18,19 @@ public class FirstAid {
     private Long id;
 
     @OneToMany(mappedBy = "firstAid", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Tag> tags = new ArrayList<>();
 
+    private String content;
 
+    private String title;
+
+    private String emoji;
 
     @Entity
     @Table(name = "tag")
     @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Tag {
