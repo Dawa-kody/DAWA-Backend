@@ -28,6 +28,8 @@ public class Rental extends BaseTime {
     @JsonIgnore
     private User user;
 
+    private boolean isAccepted;
+
     private String rental;
 
     private String count;

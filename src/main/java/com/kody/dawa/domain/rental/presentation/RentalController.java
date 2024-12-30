@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.rental.presentation;
 
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
+import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
 import com.kody.dawa.domain.rental.presentation.dto.response.MyRentalResponse;
 import com.kody.dawa.domain.rental.service.RentalService;
@@ -17,6 +18,11 @@ public class RentalController {
     @PostMapping("/write")
     public void createRental(@RequestBody RentalRequest request) {
         rentalService.createRental(request);
+    }
+
+    @PostMapping("/request")
+    public void requestRental(@RequestBody StudentRentalRequest request) {
+        rentalService.createStudentRental(request);
     }
 
     @PutMapping("/{id}")

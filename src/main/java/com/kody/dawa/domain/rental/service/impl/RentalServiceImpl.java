@@ -2,6 +2,7 @@ package com.kody.dawa.domain.rental.service.impl;
 
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
+import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
 import com.kody.dawa.domain.rental.presentation.dto.response.MyRentalResponse;
 import com.kody.dawa.domain.rental.repository.RentalRepository;
@@ -27,6 +28,19 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = Rental.builder()
                 .user(user)
                 .count(request.getCount())
+                .isAccepted(true)
+                .isRentaled(false)
+                .rental(request.getRental())
+                .build();
+        rentalRepository.save(rental);
+    }
+
+    public void createStudentRental(StudentRentalRequest request) {
+        User user = getUser.getCurrentUser();
+        Rental rental = Rental.builder()
+                .user(user)
+                .count(request.getCount())
+                .isAccepted(true)
                 .isRentaled(false)
                 .rental(request.getRental())
                 .build();
@@ -64,4 +78,6 @@ public class RentalServiceImpl implements RentalService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
 }

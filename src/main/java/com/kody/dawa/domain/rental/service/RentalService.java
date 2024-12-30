@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.rental.service;
 
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
+import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
 import com.kody.dawa.domain.rental.presentation.dto.response.MyRentalResponse;
 
@@ -12,4 +13,5 @@ public interface RentalService {
     void rentalCompleted(Long id);
     List<MyRentalResponse> getMyRentals();
     List<AllRentalResponse> getAllRentals();
+    void createStudentRental(StudentRentalRequest request);
 }
