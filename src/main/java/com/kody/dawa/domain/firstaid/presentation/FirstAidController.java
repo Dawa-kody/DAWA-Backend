@@ -2,6 +2,7 @@ package com.kody.dawa.domain.firstaid.presentation;
 
 import com.kody.dawa.domain.firstaid.presentation.dto.request.FirstAidRequest;
 import com.kody.dawa.domain.firstaid.presentation.dto.response.FirstAidResponse;
+import com.kody.dawa.domain.firstaid.presentation.dto.response.FirstAidsResponse;
 import com.kody.dawa.domain.firstaid.service.FirstAidService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,12 @@ public class FirstAidController {
     }
 
     @GetMapping
-    public List<FirstAidResponse> getFirstAids(@RequestParam(required = false) List<String> tags) {
+    public List<FirstAidsResponse> getFirstAids(@RequestParam(required = false) List<String> tags) {
         return firstAidService.getFirstAids(tags);
+    }
+
+    @GetMapping("/{id}")
+    public FirstAidResponse getFirstAid(@PathVariable Long id) {
+        return firstAidService.getFirstAid(id);
     }
 }

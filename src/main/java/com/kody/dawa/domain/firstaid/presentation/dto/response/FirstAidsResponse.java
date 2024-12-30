@@ -10,10 +10,9 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class FirstAidResponse {
+public class FirstAidsResponse {
     private String title;
     private String emoji;
-    private String content;
     private List<TagResponse> tags;
     @Getter
     @AllArgsConstructor
