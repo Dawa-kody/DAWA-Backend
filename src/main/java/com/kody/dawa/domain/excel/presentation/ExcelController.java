@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.excel.presentation;
 
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelRequest;
+import com.kody.dawa.domain.excel.service.ExcelService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,23 +22,18 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class ExcelController {
 
-    @PostMapping("xss")
-    public void xssCreate(HttpServletResponse response/*, @RequestBody ExcelRequest request*/) throws IOException {
-        String fileName = URLEncoder.encode("test.xlsx", StandardCharsets.UTF_8);
+    private final ExcelService excelService;
+
+    @PostMapping("xss_student")
+    public void xssCreate(HttpServletResponse response, @RequestBody ExcelRequest request) throws IOException {
+        String fileName = request.getFileName()+".xlsx";
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet();
-
-            Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("TEST");
-            header.createCell(1).setCellValue("VALUE");
-
-            Row row = sheet.createRow(1);
-            row.createCell(0).setCellValue("TEST1");
-            row.createCell(1).setCellValue("VALUE1");
+            excelService.createXssStudent(request,sheet);
 
             workbook.write(response.getOutputStream());
         }
