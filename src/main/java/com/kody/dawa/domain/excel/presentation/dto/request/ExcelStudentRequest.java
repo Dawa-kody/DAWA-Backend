@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExcelRequest {
+public class ExcelStudentRequest {
     private String fileName;
-    private String gender;
-    private Treatment treatment;
-    private Date date;
+    private String studentId;
 }
