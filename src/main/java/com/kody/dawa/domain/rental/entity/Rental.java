@@ -39,4 +39,8 @@ public class Rental extends BaseTime {
     public void setIsRentaled(boolean isRentaled) {
         this.isRentaled = isRentaled;
     }
+
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
 }

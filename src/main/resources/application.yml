@@ -30,6 +30,19 @@ spring:
     password: ${EMAIL_PASSWORD}
     port: '587'
 
+cloud:
+  aws:
+    credentials:
+      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${AWS_ACCESS_KEY}
+    s3:
+      bucket: ${AWS_S3_BUCKET}
+    region:
+      static: ${AWS_REGION}
+      auto: false
+    stack:
+      auto: false
+
 jwt:
   access: 99999999999999999
   refresh: 259200000

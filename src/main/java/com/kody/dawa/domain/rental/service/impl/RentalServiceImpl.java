@@ -5,6 +5,7 @@ import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
 import com.kody.dawa.domain.rental.presentation.dto.response.MyRentalResponse;
+import com.kody.dawa.domain.rental.presentation.dto.response.RentalAcceptResponse;
 import com.kody.dawa.domain.rental.repository.RentalRepository;
 import com.kody.dawa.domain.rental.service.RentalService;
 import com.kody.dawa.domain.user.entity.User;
@@ -40,7 +41,7 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = Rental.builder()
                 .user(user)
                 .count(request.getCount())
-                .isAccepted(true)
+                .isAccepted(false)
                 .isRentaled(false)
                 .rental(request.getRental())
                 .build();
@@ -49,10 +50,34 @@ public class RentalServiceImpl implements RentalService {
 
     public void rentalCompleted(Long id) {
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("없음"));
+                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
         rental.setIsRentaled(true);
+        rentalRepository.save(rental);
     }
 
+    public void rentalAccepted(Long id) {
+        Rental rental =rentalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+        rental.setIsAccepted(true);
+        rentalRepository.save(rental);
+    }
+
+    public void rentalCancel(Long id) {
+        Rental rental =rentalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+        rentalRepository.delete(rental);
+    }
+
+    public List<RentalAcceptResponse> getRentalAccept() {
+        List<Rental> rentals = rentalRepository.findAllRentalsWhereAcceptedIsFalseOrderByCreateAtDesc();
+        return rentals.stream()
+                .map(rental -> RentalAcceptResponse.builder()
+                        .count(rental.getCount())
+                        .rental(rental.getRental())
+                        .name(rental.getUser().getName())
+                        .build())
+                .collect(Collectors.toList());
+    }
     public List<MyRentalResponse> getMyRentals() {
         User user = getUser.getCurrentUser();
         List<Rental> rentals = rentalRepository.findRentalsByUserOrderByCreateAtDesc(user);
@@ -62,12 +87,13 @@ public class RentalServiceImpl implements RentalService {
                         .rental(rental.getRental())
                         .formattedDate(rental.getFormattedDate())
                         .isRentaled(rental.isRentaled())
+                        .isAccepted(rental.isAccepted())
                         .build())
                 .collect(Collectors.toList());
     }
 
     public List<AllRentalResponse> getAllRentals() {
-        List<Rental> rentals = rentalRepository.findAllRentalsOrderByCreateAtDesc();
+        List<Rental> rentals = rentalRepository.findAllAcceptedRentalsOrderByCreateAtDesc();
         return rentals.stream()
                 .map(rental -> AllRentalResponse.builder()
                         .count(rental.getCount())
@@ -78,6 +104,4 @@ public class RentalServiceImpl implements RentalService {
                         .build())
                 .collect(Collectors.toList());
     }
-
-
 }

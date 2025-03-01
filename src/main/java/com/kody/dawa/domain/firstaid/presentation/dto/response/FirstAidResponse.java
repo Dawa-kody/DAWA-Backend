@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 public class FirstAidResponse {
     private String title;
@@ -20,5 +20,16 @@ public class FirstAidResponse {
     @NoArgsConstructor
     public static class TagResponse {
         private String name;
+    }
+
+    private List<RelatedFirstAidResponse> relatedFirstAids;
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RelatedFirstAidResponse {
+        private String title;
+        private List<TagResponse> tags;
     }
 }

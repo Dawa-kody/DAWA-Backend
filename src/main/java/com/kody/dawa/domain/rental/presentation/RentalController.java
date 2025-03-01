@@ -4,6 +4,7 @@ import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
 import com.kody.dawa.domain.rental.presentation.dto.response.MyRentalResponse;
+import com.kody.dawa.domain.rental.presentation.dto.response.RentalAcceptResponse;
 import com.kody.dawa.domain.rental.service.RentalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,20 @@ public class RentalController {
     @GetMapping("/allRental")
     public List<AllRentalResponse> getAllRentals() {
         return rentalService.getAllRentals();
+    }
+
+    @GetMapping("/rentalAccept")
+    public List<RentalAcceptResponse> getRentalAccept() {
+        return rentalService.getRentalAccept();
+    }
+
+    @PutMapping("/rentalAccept/{id}")
+    public void rentalAccepted(@PathVariable Long id) {
+        rentalService.rentalAccepted(id);
+    }
+
+    @DeleteMapping("/rentalCancel/{id}")
+    public void rentalCancel(@PathVariable Long id) {
+        rentalService.rentalCancel(id);
     }
 }

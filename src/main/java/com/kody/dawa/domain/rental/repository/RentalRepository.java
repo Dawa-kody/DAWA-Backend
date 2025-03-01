@@ -11,6 +11,8 @@ import java.util.List;
 public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT r FROM Rental r WHERE r.user = ?1 ORDER BY r.createAt DESC")
     List<Rental> findRentalsByUserOrderByCreateAtDesc(User user);
-    @Query("SELECT r FROM Rental r ORDER BY r.createAt DESC")
-    List<Rental> findAllRentalsOrderByCreateAtDesc();
+    @Query("SELECT r FROM Rental r WHERE r.isAccepted = true ORDER BY r.createAt DESC")
+    List<Rental> findAllAcceptedRentalsOrderByCreateAtDesc();
+    @Query("SELECT r FROM Rental r WHERE r.isAccepted = false ORDER BY r.createAt DESC")
+    List<Rental> findAllRentalsWhereAcceptedIsFalseOrderByCreateAtDesc();
 }

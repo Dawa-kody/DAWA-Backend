@@ -28,4 +28,6 @@ public class FirstAidController {
     public FirstAidResponse getFirstAid(@PathVariable Long id) {
         return firstAidService.getFirstAid(id);
     }
+
+
 }

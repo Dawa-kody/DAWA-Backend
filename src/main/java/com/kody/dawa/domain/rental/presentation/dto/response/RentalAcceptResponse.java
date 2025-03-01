@@ -7,10 +7,8 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class MyRentalResponse {
-    private String formattedDate;
+public class RentalAcceptResponse {
     private String count;
     private String rental;
-    private boolean isRentaled;
-    private boolean isAccepted;
+    private String name;
 }
