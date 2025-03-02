@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionnaireRequest {
-    private String content;
+    private String serialNumber;
+    private String userName;
     private String schoolNumber;
-    private String result;
+    private String disease;
+    private String content;
+    private String time;
+    private String gender;
 }

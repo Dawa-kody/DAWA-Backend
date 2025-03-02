@@ -46,6 +46,3 @@ jwt:
   access: 99999999999999999
   refresh: 259200000
   secret: ${JWT_SECRET}
-
-server:
-  port: 8090

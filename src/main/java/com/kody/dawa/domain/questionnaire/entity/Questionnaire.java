@@ -27,7 +27,18 @@ public class Questionnaire extends BaseTime {
     @JsonIgnore
     private User user;
 
-    private String result;
+    private String serialNumber;
+
+    private String userName;
+
+    private String gender;
+
+    @Column(length = 4)
+    private String SchoolNumber;
+
+    private String disease;
 
     private String content;
+
+    private String time;
 }

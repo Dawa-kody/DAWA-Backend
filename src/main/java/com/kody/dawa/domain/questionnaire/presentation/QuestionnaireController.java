@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequestMapping("/questionnaire")
 @RestController
 @RequiredArgsConstructor
@@ -15,9 +17,9 @@ public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
     @PostMapping("/write")
-    public void createQuestionnaire(@RequestBody QuestionnaireRequest request) {
-        questionnaireService.createQuestionnaire(request);
+    public void createQuestionnaire(@RequestBody List<QuestionnaireRequest> requests) {
+        questionnaireService.createQuestionnaires(requests);
     }
 
-    //수정
+
 }

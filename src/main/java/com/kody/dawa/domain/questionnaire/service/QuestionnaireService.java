@@ -1,7 +1,10 @@
 package com.kody.dawa.domain.questionnaire.service;
 
+import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 
+import java.util.List;
+
 public interface QuestionnaireService {
-    void createQuestionnaire(QuestionnaireRequest request);
+    List<Questionnaire> createQuestionnaires(List<QuestionnaireRequest> requests);
 }
