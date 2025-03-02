@@ -34,7 +34,7 @@ public class Questionnaire extends BaseTime {
     private String gender;
 
     @Column(length = 4)
-    private String SchoolNumber;
+    private String schoolNumber;
 
     private String disease;
 

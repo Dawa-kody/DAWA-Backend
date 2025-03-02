@@ -1,12 +1,11 @@
 package com.kody.dawa.domain.questionnaire.presentation;
 
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
+import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.service.QuestionnaireService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,9 +16,13 @@ public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
     @PostMapping("/write")
-    public void createQuestionnaire(@RequestBody List<QuestionnaireRequest> requests) {
+    public void createQuestionnaires(@RequestBody List<QuestionnaireRequest> requests) {
         questionnaireService.createQuestionnaires(requests);
     }
 
-
+    @GetMapping("/date")
+    public ResponseEntity<List<QuestionnaireResponse>> getQuestionnairesByYearMonthDay(@RequestParam String yearMonthDay) {
+        List<QuestionnaireResponse> response = questionnaireService.getQuestionnairesByYearMonthDay(yearMonthDay);
+        return ResponseEntity.ok(response);
+    }
 }

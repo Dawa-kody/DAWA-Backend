@@ -2,6 +2,7 @@ package com.kody.dawa.domain.questionnaire.service.impl;
 
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
+import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.repository.QuestionnaireRepository;
 import com.kody.dawa.domain.questionnaire.service.QuestionnaireService;
 import com.kody.dawa.domain.user.entity.User;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                             .serialNumber(request.getSerialNumber())
                             .userName(request.getUserName())
                             .user(user)
-                            .SchoolNumber(request.getSchoolNumber())
+                            .schoolNumber(request.getSchoolNumber())
                             .disease(request.getDisease())
                             .content(request.getContent())
                             .time(request.getTime())
@@ -36,5 +38,21 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .toList();
 
         return questionnaireRepository.saveAll(questionnaires);
+    }
+
+    public List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay) {
+        List<Questionnaire> questionnaires = questionnaireRepository.findByYearMonthDay(yearMonthDay);
+
+        return questionnaires.stream()
+                .map(response -> QuestionnaireResponse.builder()
+                        .serialNumber(response.getSerialNumber())
+                        .userName(response.getUserName())
+                        .schoolNumber(response.getSchoolNumber())
+                        .disease(response.getDisease())
+                        .content(response.getContent())
+                        .time(response.getTime())
+                        .gender(response.getGender())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
