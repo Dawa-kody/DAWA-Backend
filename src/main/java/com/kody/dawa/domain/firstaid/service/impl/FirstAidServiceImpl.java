@@ -82,7 +82,8 @@ public class FirstAidServiceImpl implements FirstAidService {
                         related.getTitle(),
                         related.getTags().stream()
                                 .map(tag -> new FirstAidResponse.TagResponse(tag.getName()))
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()),
+                        related.getId()
                 ))
                 .collect(Collectors.toList());
 

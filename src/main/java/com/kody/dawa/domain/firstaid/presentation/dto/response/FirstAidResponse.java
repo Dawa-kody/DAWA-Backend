@@ -31,5 +31,6 @@ public class FirstAidResponse {
     public static class RelatedFirstAidResponse {
         private String title;
         private List<TagResponse> tags;
+        private Long firstAidId;
     }
 }
