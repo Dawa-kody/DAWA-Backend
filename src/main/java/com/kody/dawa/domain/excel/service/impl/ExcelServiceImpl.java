@@ -40,9 +40,10 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     public void createRow(List<Questionnaire> questionnaires, Sheet sheet){
+        Long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
-            row.createCell(0).setCellValue(questionnaire.getId());
+            row.createCell(0).setCellValue(num++);
             row.createCell(1).setCellValue(questionnaire.getUserName());
             row.createCell(2).setCellValue(questionnaire.getSchoolNumber());
             row.createCell(3).setCellValue(questionnaire.getGender());
