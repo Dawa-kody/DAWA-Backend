@@ -4,12 +4,14 @@ import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.repository.ExcelRepository;
 import com.kody.dawa.domain.excel.service.ExcelService;
+import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,17 +21,35 @@ public class ExcelServiceImpl implements ExcelService {
     public void createXssStudent(ExcelStudentRequest excelRequest, Sheet sheet){
         createHeader(sheet);
         String studentId = excelRequest.getStudentId();
-
+        List<Questionnaire> questionnaires = excelRepository.findBySchoolNumber(studentId);
+        createRow(questionnaires, sheet);
     }
 
     public void createXssMonth(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
         Date date =  excelRequest.getDate();
+        List<Questionnaire> questionnaires = excelRepository.findByYearMonthDay(date.toString());
+        createRow(questionnaires, sheet);
     }
 
     public void createXssYear(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
         Date date =  excelRequest.getDate();
+        List<Questionnaire> questionnaires = excelRepository.findByYearMonthDay(date.toString());
+        createRow(questionnaires, sheet);
+    }
+
+    public void createRow(List<Questionnaire> questionnaires, Sheet sheet){
+        for (Questionnaire questionnaire : questionnaires) {
+            Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+            row.createCell(0).setCellValue(questionnaire.getId());
+            row.createCell(1).setCellValue(questionnaire.getUserName());
+            row.createCell(2).setCellValue(questionnaire.getSchoolNumber());
+            row.createCell(3).setCellValue(questionnaire.getGender());
+            row.createCell(4).setCellValue(questionnaire.getDisease());
+            row.createCell(5).setCellValue(questionnaire.getContent());
+            row.createCell(6).setCellValue(questionnaire.getYearMonthDay());
+        }
     }
 
     public void createHeader(Sheet sheet){
