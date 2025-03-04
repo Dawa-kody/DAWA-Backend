@@ -28,14 +28,14 @@ public class ExcelServiceImpl implements ExcelService {
     public void createXssMonth(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
         Date date =  excelRequest.getDate();
-        List<Questionnaire> questionnaires = excelRepository.findByYearMonthDay(date.toString());
+        List<Questionnaire> questionnaires = excelRepository.findByYearAndMonth(date.toString());
         createRow(questionnaires, sheet);
     }
 
     public void createXssYear(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
         Date date =  excelRequest.getDate();
-        List<Questionnaire> questionnaires = excelRepository.findByYearMonthDay(date.toString());
+        List<Questionnaire> questionnaires = excelRepository.findByYear(date.toString());
         createRow(questionnaires, sheet);
     }
 
