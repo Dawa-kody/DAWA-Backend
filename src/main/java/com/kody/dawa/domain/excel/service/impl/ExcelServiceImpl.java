@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,14 +26,14 @@ public class ExcelServiceImpl implements ExcelService {
 
     public void createXssMonth(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
-        Date date =  excelRequest.getDate();
+        String date =  excelRequest.getDate();
         List<Questionnaire> questionnaires = excelRepository.findByYearAndMonth(date.toString());
         createRow(questionnaires, sheet);
     }
 
     public void createXssYear(ExcelDateRequest excelRequest, Sheet sheet){
         createHeader(sheet);
-        Date date =  excelRequest.getDate();
+        String date =  excelRequest.getDate();
         List<Questionnaire> questionnaires = excelRepository.findByYear(date.toString());
         createRow(questionnaires, sheet);
     }
@@ -43,13 +42,14 @@ public class ExcelServiceImpl implements ExcelService {
         Long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+            System.out.println(questionnaire.getUserName());
             row.createCell(0).setCellValue(num++);
             row.createCell(1).setCellValue(questionnaire.getUserName());
             row.createCell(2).setCellValue(questionnaire.getSchoolNumber());
             row.createCell(3).setCellValue(questionnaire.getGender());
             row.createCell(4).setCellValue(questionnaire.getDisease());
             row.createCell(5).setCellValue(questionnaire.getContent());
-            row.createCell(6).setCellValue(questionnaire.getYearMonthDay());
+            row.createCell(6).setCellValue(questionnaire.getTime());
         }
     }
 

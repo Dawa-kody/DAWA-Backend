@@ -13,5 +13,5 @@ import java.util.Date;
 @NoArgsConstructor
 public class ExcelDateRequest {
     private String fileName;
-    private Date date;
+    private String date;
 }
