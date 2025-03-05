@@ -23,6 +23,8 @@ public class FirstAid {
 
     private String content;
 
+    private String diseaseName;
+
     private String title;
 
     private String emoji;

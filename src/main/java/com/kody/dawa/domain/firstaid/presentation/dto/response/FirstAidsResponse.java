@@ -13,6 +13,7 @@ import java.util.List;
 public class FirstAidsResponse {
     private String title;
     private String emoji;
+    private Long firstAidId;
     private List<TagResponse> tags;
     @Getter
     @AllArgsConstructor

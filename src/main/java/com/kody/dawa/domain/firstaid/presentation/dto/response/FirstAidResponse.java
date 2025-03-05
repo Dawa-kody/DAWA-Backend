@@ -14,6 +14,7 @@ public class FirstAidResponse {
     private String title;
     private String emoji;
     private String content;
+    private String diseaseName;
     private List<TagResponse> tags;
     @Getter
     @AllArgsConstructor
