@@ -29,12 +29,13 @@ public class TokenProvider {
 
     public TokenResponse generateTokenSet(Long id, Role role){
         return new TokenResponse(
-                generateToken(id, TokenType.ACCESS, role),
-                generateToken(id, TokenType.REFRESH, role)
+                generateToken(id, TokenType.ACCESS),
+                generateToken(id, TokenType.REFRESH),
+                role
         );
     }
 
-    public String generateToken(Long id, TokenType tokenType, Role role) {
+    public String generateToken(Long id, TokenType tokenType) {
         Long expired = tokenType == TokenType.ACCESS ? access : refresh;
 
         byte[] keyBytes = Base64.getEncoder().encode(secretKey.getBytes());
@@ -43,7 +44,6 @@ public class TokenProvider {
         return Jwts.builder()
                 .signWith(signingKey)
                 .subject(String.valueOf(id))
-                .claim("role", role.getPermission())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expired))
                 .compact();
