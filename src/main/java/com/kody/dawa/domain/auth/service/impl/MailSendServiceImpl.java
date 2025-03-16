@@ -16,18 +16,14 @@ public class MailSendServiceImpl implements MailSendService {
     private final AuthCodeRepository authCodeRepository;
     private final JavaMailSender javaMailSender;
     @Transactional
-    public void execute(AuthCodeRequest request) {
-        if (authCodeRepository.existsByEmail(request.getEmail())) {
-            authCodeRepository.deleteByEmail(request.getEmail());
-        }
+    public void sendMail(AuthCodeRequest request) {
+        authCodeRepository.deleteByEmail(request.getEmail());
         AuthCode authCode = authCodeRepository.save(new AuthCode(request));
 
-        if (authCode.getCode() != null) {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(authCode.getEmail());
-            mailMessage.setSubject("Dawa 비밀번호 변경 확인 코드 입니다.");
-            mailMessage.setText("비밀번호 변경 인증 코드 입니다.\n" + authCode.getCode());
-            javaMailSender.send(mailMessage);
-        }
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(authCode.getEmail());
+        mailMessage.setSubject("dawa 비밀번호 변경 확인 코드 입니다.");
+        mailMessage.setText("비밀번호 변경 인증 코드 입니다.\n" + authCode.getCode());
+        javaMailSender.send(mailMessage);
     }
 }

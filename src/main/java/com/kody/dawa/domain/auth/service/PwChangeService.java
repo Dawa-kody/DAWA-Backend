@@ -5,5 +5,5 @@ import com.kody.dawa.domain.auth.presentation.dto.request.PwChangeRequest;
 import java.util.HashMap;
 
 public interface PwChangeService {
-    void execute(PwChangeRequest request);
+    void passwordChange(PwChangeRequest request);
 }
