@@ -31,6 +31,7 @@ public class FirstAidServiceImpl implements FirstAidService {
                 .content(request.getContent())
                 .title(request.getTitle())
                 .emoji(imageUrl)
+                .diseaseName(request.getDiseaseName())
                 .build();
 
         for (FirstAidRequest.TagRequest tagRequest : request.getTags()) {
@@ -63,6 +64,7 @@ public class FirstAidServiceImpl implements FirstAidService {
         return FirstAidsResponse.builder()
                 .title(firstAid.getTitle())
                 .emoji(firstAid.getEmoji())
+                .firstAidId(firstAid.getId())
                 .tags(tagResponses)
                 .build();
     }
@@ -102,6 +104,7 @@ public class FirstAidServiceImpl implements FirstAidService {
         return FirstAidResponse.builder()
                 .title(firstAid.getTitle())
                 .emoji(firstAid.getEmoji())
+                .diseaseName(firstAid.getDiseaseName())
                 .content(firstAid.getContent())
                 .tags(tagResponses)
                 .build();

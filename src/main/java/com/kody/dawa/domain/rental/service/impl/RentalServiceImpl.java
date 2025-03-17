@@ -73,8 +73,10 @@ public class RentalServiceImpl implements RentalService {
         return rentals.stream()
                 .map(rental -> RentalAcceptResponse.builder()
                         .count(rental.getCount())
+                        .rentalId(rental.getId())
                         .rental(rental.getRental())
                         .name(rental.getUser().getName())
+                        .schoolNumber(rental.getUser().getSchoolNumber())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -84,6 +86,7 @@ public class RentalServiceImpl implements RentalService {
         return rentals.stream()
                 .map(rental -> MyRentalResponse.builder()
                         .count(rental.getCount())
+                        .rentalId(rental.getId())
                         .rental(rental.getRental())
                         .formattedDate(rental.getFormattedDate())
                         .isRentaled(rental.isRentaled())
@@ -99,6 +102,7 @@ public class RentalServiceImpl implements RentalService {
                         .count(rental.getCount())
                         .rental(rental.getRental())
                         .name(rental.getUser().getName())
+                        .rentalId(rental.getId())
                         .isRentaled(rental.isRentaled())
                         .formattedDate(rental.getFormattedDate())
                         .build())

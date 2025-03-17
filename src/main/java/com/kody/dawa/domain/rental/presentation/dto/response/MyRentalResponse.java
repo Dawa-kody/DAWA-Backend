@@ -11,6 +11,7 @@ public class MyRentalResponse {
     private String formattedDate;
     private String count;
     private String rental;
+    private Long rentalId;
     private boolean isRentaled;
     private boolean isAccepted;
 }

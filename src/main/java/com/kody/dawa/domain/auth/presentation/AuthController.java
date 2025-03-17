@@ -43,11 +43,11 @@ public class AuthController {
 
     @PostMapping( "/mailsend")
     public void mailSend(@RequestBody @Valid AuthCodeRequest request){
-        mailSendService.execute(request);
+        mailSendService.sendMail(request);
     }
 
     @PostMapping("/pwchange")
     public void mailCheck(@RequestBody @Valid PwChangeRequest request) {
-        pwChangeService.execute(request);
+        pwChangeService.passwordChange(request);
     }
 }

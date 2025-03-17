@@ -10,5 +10,7 @@ import lombok.Getter;
 public class RentalAcceptResponse {
     private String count;
     private String rental;
+    private Long rentalId;
     private String name;
+    private String schoolNumber;
 }

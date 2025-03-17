@@ -15,6 +15,7 @@ public class FirstAidRequest {
     private String content;
     private String title;
     private String emoji;
+    private String diseaseName;
     private List<TagRequest> tags;
     @Getter
     @AllArgsConstructor

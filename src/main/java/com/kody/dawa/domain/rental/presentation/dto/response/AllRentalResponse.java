@@ -12,5 +12,6 @@ public class AllRentalResponse {
     private String count;
     private String rental;
     private String name;
+    private Long rentalId;
     private boolean isRentaled;
 }
