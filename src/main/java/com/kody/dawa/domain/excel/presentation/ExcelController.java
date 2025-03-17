@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.excel.presentation;
 
+import com.kody.dawa.domain.excel.presentation.dto.request.AutoRequest;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.service.ExcelService;
@@ -47,7 +48,6 @@ public class ExcelController {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet();
             excelService.createXssMonth(request,sheet);
-
             workbook.write(response.getOutputStream());
         }
     }
@@ -65,5 +65,13 @@ public class ExcelController {
 
             workbook.write(response.getOutputStream());
         }
+    }
+
+    @PostMapping("/auto")
+    public void auto(HttpServletResponse response, @RequestBody AutoRequest request) throws IOException {
+        String fileName = request.getDate()+".xlsx";
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
     }
 }

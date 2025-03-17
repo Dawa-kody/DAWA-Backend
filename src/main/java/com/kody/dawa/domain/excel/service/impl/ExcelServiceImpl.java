@@ -8,8 +8,15 @@ import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -38,11 +45,45 @@ public class ExcelServiceImpl implements ExcelService {
         createRow(questionnaires, sheet);
     }
 
+    @Scheduled(cron = "0 0 17 * * MON-FRI")
+    public void autoSave(){
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = now.format(dateTimeFormatter);
+
+        List<Questionnaire> questionnaires = excelRepository.findByFormattedDate(date);
+    }
+
+    private void saveToExcel(List<Questionnaire> questionnaires, String date) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Questionnaires");
+
+
+        createHeader(sheet);
+
+        createRow(questionnaires, sheet);
+
+        String filePath = "C:/data/questionnaire_" + date + ".xlsx"; // Windows 예제
+
+        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+            workbook.write(fileOut);
+            System.out.println("✅ Excel 파일 저장 완료: " + filePath);
+        } catch (IOException e) {
+            System.err.println("❌ Excel 저장 중 오류 발생: " + e.getMessage());
+        }
+
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void createRow(List<Questionnaire> questionnaires, Sheet sheet){
         Long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
-            System.out.println(questionnaire.getUserName());
             row.createCell(0).setCellValue(num++);
             row.createCell(1).setCellValue(questionnaire.getUserName());
             row.createCell(2).setCellValue(questionnaire.getSchoolNumber());
