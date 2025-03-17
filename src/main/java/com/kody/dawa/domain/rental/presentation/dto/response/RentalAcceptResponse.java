@@ -12,4 +12,5 @@ public class RentalAcceptResponse {
     private String rental;
     private Long rentalId;
     private String name;
+    private String schoolNumber;
 }

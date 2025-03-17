@@ -76,6 +76,7 @@ public class RentalServiceImpl implements RentalService {
                         .rentalId(rental.getId())
                         .rental(rental.getRental())
                         .name(rental.getUser().getName())
+                        .schoolNumber(rental.getUser().getSchoolNumber())
                         .build())
                 .collect(Collectors.toList());
     }
