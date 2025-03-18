@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.excel.service.impl;
 
+import com.kody.dawa.domain.excel.entity.Medicine;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.repository.ExcelRepository;
@@ -95,25 +96,31 @@ public class ExcelServiceImpl implements ExcelService {
     public void createRow(List<Questionnaire> questionnaires, Sheet sheet){
         Long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
+            int i = 0;
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
-            row.createCell(0).setCellValue(num++);
-            row.createCell(1).setCellValue(questionnaire.getUserName());
-            row.createCell(2).setCellValue(questionnaire.getSchoolNumber());
-            row.createCell(3).setCellValue(questionnaire.getGender());
-            row.createCell(4).setCellValue(questionnaire.getDisease());
-            row.createCell(5).setCellValue(questionnaire.getContent());
-            row.createCell(6).setCellValue(questionnaire.getTime());
+            row.createCell(i++).setCellValue(num++);
+            row.createCell(i++).setCellValue(questionnaire.getUserName());
+            row.createCell(i++).setCellValue(questionnaire.getSchoolNumber());
+            row.createCell(i++).setCellValue(questionnaire.getGender());
+            row.createCell(i++).setCellValue(questionnaire.getDisease());
+            row.createCell(i++).setCellValue(questionnaire.getContent());
+//            row.createCell(i++).setCellValue(Medicine.getName);
+//            row.createCell(i++).setCellValue(Medicine.getCount);
+            row.createCell(i++).setCellValue(questionnaire.getTime());
         }
     }
 
-    public void createHeader(Sheet sheet){
+    public void createHeader(Sheet sheet){//8가지
+        int i = 0;
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("연번");
-        header.createCell(1).setCellValue("이름");
-        header.createCell(2).setCellValue("학번");
-        header.createCell(3).setCellValue("성별");
-        header.createCell(4).setCellValue("병명");
-        header.createCell(5).setCellValue("처치");
-        header.createCell(6).setCellValue("시간");
+        header.createCell(i++).setCellValue("연번");
+        header.createCell(i++).setCellValue("이름");
+        header.createCell(i++).setCellValue("학번");
+        header.createCell(i++).setCellValue("성별");
+        header.createCell(i++).setCellValue("병명");
+        header.createCell(i++).setCellValue("처치");
+        header.createCell(i++).setCellValue("약");
+        header.createCell(i++).setCellValue("재고");
+        header.createCell(i++).setCellValue("시간");
     }
 }
