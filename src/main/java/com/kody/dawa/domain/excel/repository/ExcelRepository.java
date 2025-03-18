@@ -12,10 +12,10 @@ import java.util.List;
 public interface ExcelRepository extends JpaRepository<Questionnaire,Long> {
     List<Questionnaire> findBySchoolNumber(String schoolNumber);
 
-    @Query("SELECT q FROM Questionnaire q WHERE q.yearMonthDay LIKE :year")
+    @Query("SELECT q FROM Questionnaire q WHERE q.yearMonthDay LIKE CONCAT(:year,'.%')")
     List<Questionnaire> findByYear(@Param("year") String year);
 
-    @Query("SELECT q FROM Questionnaire q WHERE q.yearMonthDay LIKE :yearMonth")
+    @Query("SELECT q FROM Questionnaire q WHERE q.yearMonthDay LIKE CONCAT(:yearMonth,'.%')")
     List<Questionnaire> findByYearAndMonth(@Param("yearMonth") String yearMonth);
 
     @Query("SELECT q FROM Questionnaire q WHERE q.formattedDate LIKE :formattedDate")

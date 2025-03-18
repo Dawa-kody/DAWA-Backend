@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -48,22 +49,33 @@ public class ExcelServiceImpl implements ExcelService {
     @Scheduled(cron = "0 0 17 * * MON-FRI")
     public void autoSave(){
         LocalDate now = LocalDate.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM.dd");
         String date = now.format(dateTimeFormatter);
 
         List<Questionnaire> questionnaires = excelRepository.findByFormattedDate(date);
+        saveToExcel(questionnaires,date);
     }
 
     private void saveToExcel(List<Questionnaire> questionnaires, String date) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Questionnaires");
 
-
         createHeader(sheet);
-
         createRow(questionnaires, sheet);
 
-        String filePath = "C:/data/questionnaire_" + date + ".xlsx"; // Windows 예제
+        String directoryPath = "C:/data/auto_save/";
+        String filePath = directoryPath + date + ".xlsx";
+
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs();
+            if (created) {
+                System.out.println("📂 디렉토리 생성 완료: " + directoryPath);
+            } else {
+                System.err.println("❌ 디렉토리 생성 실패!");
+                return;
+            }
+        }
 
         try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
             workbook.write(fileOut);

@@ -9,11 +9,17 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @RequestMapping("/excel")
@@ -68,10 +74,18 @@ public class ExcelController {
     }
 
     @PostMapping("/auto")
-    public void auto(HttpServletResponse response, @RequestBody AutoRequest request) throws IOException {
-        String fileName = request.getDate()+".xlsx";
+    public ResponseEntity<?> downloadSavedExcel(@RequestBody AutoRequest request) throws IOException {
+        String filePath = "C:/data/auto_save/" + request.getDate() + ".xlsx";
+        File file = new File(filePath);
 
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
