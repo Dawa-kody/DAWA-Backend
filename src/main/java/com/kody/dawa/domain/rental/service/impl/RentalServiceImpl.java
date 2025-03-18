@@ -50,21 +50,21 @@ public class RentalServiceImpl implements RentalService {
 
     public void rentalCompleted(Long id) {
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+                .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
         rental.setIsRentaled(true);
         rentalRepository.save(rental);
     }
 
     public void rentalAccepted(Long id) {
         Rental rental =rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+                .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
         rental.setIsAccepted(true);
         rentalRepository.save(rental);
     }
 
     public void rentalCancel(Long id) {
         Rental rental =rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+                .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
         rentalRepository.delete(rental);
     }
 
