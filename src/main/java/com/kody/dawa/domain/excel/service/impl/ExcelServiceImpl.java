@@ -1,6 +1,5 @@
 package com.kody.dawa.domain.excel.service.impl;
 
-import com.kody.dawa.domain.excel.entity.Medicine;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
 import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.repository.ExcelRepository;
@@ -119,8 +118,8 @@ public class ExcelServiceImpl implements ExcelService {
         header.createCell(i++).setCellValue("성별");
         header.createCell(i++).setCellValue("병명");
         header.createCell(i++).setCellValue("처치");
-        header.createCell(i++).setCellValue("약");
-        header.createCell(i++).setCellValue("재고");
+//        header.createCell(i++).setCellValue("약");
+//        header.createCell(i++).setCellValue("재고");
         header.createCell(i++).setCellValue("시간");
     }
 }
