@@ -2,6 +2,7 @@ package com.kody.dawa.domain.medicine.service.impl;
 
 import com.kody.dawa.domain.medicine.entity.Medicine;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineDeleteRequest;
+import com.kody.dawa.domain.medicine.presentation.dto.MedicineGetRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
@@ -43,7 +44,7 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.deleteByName(request.getMedicineName());
     }
 
-    public List<Medicine> getAllMedicine(){
-        return medicineRepository.findAll();
+    public List<Medicine> getAllMedicine(MedicineGetRequest request){
+        return medicineRepository.findByType(request.getMedicineType());
     }
 }

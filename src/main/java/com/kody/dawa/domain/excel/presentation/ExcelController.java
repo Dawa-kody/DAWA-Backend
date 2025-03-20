@@ -79,7 +79,7 @@ public class ExcelController {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("그날애 관련된 값이 없습니다.");
         }
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
