@@ -1,4 +1,4 @@
-package com.kody.dawa.domain.medicine.presentation.domain;
+package com.kody.dawa.domain.medicine.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     Medicine findByName(String name);
+    void deleteByName(String name);
 }
