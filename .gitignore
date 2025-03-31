@@ -25,6 +25,8 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+main/resources/application.properties
+.gitignore
 
 ### NetBeans ###
 /nbproject/private/
