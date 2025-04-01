@@ -11,7 +11,7 @@ import java.util.List;
 public interface RentalService {
     void createRental(RentalRequest request);
     void rentalCompleted(Long id);
-    void rentalAccepted(Long id);
+    void rentalAccepted(Long id, boolean accepted);
     void rentalCancel(Long id);
     List<RentalAcceptResponse> getRentalAccept();
     List<MyRentalResponse> getMyRentals();

@@ -52,4 +52,6 @@ public class VisitRecordServiceImpl implements VisitRecordService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
 }

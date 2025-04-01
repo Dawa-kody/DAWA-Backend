@@ -47,8 +47,8 @@ public class RentalController {
     }
 
     @PutMapping("/rentalAccept/{id}")
-    public void rentalAccepted(@PathVariable Long id) {
-        rentalService.rentalAccepted(id);
+    public void rentalAccepted(@PathVariable Long id, @RequestParam boolean accepted) {
+        rentalService.rentalAccepted(id, accepted);
     }
 
     @DeleteMapping("/rentalCancel/{id}")

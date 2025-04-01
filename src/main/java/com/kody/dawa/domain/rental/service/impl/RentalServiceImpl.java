@@ -55,11 +55,16 @@ public class RentalServiceImpl implements RentalService {
         rentalRepository.save(rental);
     }
 
-    public void rentalAccepted(Long id) {
-        Rental rental =rentalRepository.findById(id)
+    public void rentalAccepted(Long id,  boolean accepted) {
+        Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
-        rental.setIsAccepted(true);
-        rentalRepository.save(rental);
+
+        if (accepted) {
+            rental.setIsAccepted(true);
+            rentalRepository.save(rental);
+        } else {
+            rentalRepository.delete(rental);
+        }
     }
 
     public void rentalCancel(Long id) {
