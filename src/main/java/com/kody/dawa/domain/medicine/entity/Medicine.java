@@ -21,5 +21,9 @@ public class Medicine {
 
     private int count;
 
+    //순환기계 근골격계 이런 계류
+    private String system;
+
+    //진통제, 감기약, 이런 약류
     private String type;
 }
