@@ -25,26 +25,26 @@ import java.util.List;
 public class ExcelServiceImpl implements ExcelService {
     private final ExcelRepository excelRepository;
 
-    public void createXssStudent(ExcelStudentRequest excelRequest, Sheet sheet){
-        createHeader(sheet);
-        String studentId = excelRequest.getStudentId();
-        List<Questionnaire> questionnaires = excelRepository.findBySchoolNumber(studentId);
-        createRow(questionnaires, sheet);
-    }
-
-    public void createXssMonth(ExcelDateRequest excelRequest, Sheet sheet){
-        createHeader(sheet);
-        String date =  excelRequest.getDate();
-        List<Questionnaire> questionnaires = excelRepository.findByYearAndMonth(date.toString());
-        createRow(questionnaires, sheet);
-    }
-
-    public void createXssYear(ExcelDateRequest excelRequest, Sheet sheet){
-        createHeader(sheet);
-        String date =  excelRequest.getDate();
-        List<Questionnaire> questionnaires = excelRepository.findByYear(date.toString());
-        createRow(questionnaires, sheet);
-    }
+//    public void createXssStudent(ExcelStudentRequest excelRequest, Sheet sheet){
+//        createHeader(sheet);
+//        String studentId = excelRequest.getStudentId();
+//        List<Questionnaire> questionnaires = excelRepository.findBySchoolNumber(studentId);
+//        createRow(questionnaires, sheet);
+//    }
+//
+//    public void createXssMonth(ExcelDateRequest excelRequest, Sheet sheet){
+//        createHeader(sheet);
+//        String date =  excelRequest.getDate();
+//        List<Questionnaire> questionnaires = excelRepository.findByYearAndMonth(date.toString());
+//        createRow(questionnaires, sheet);
+//    }
+//
+//    public void createXssYear(ExcelDateRequest excelRequest, Sheet sheet){
+//        createHeader(sheet);
+//        String date =  excelRequest.getDate();
+//        List<Questionnaire> questionnaires = excelRepository.findByYear(date.toString());
+//        createRow(questionnaires, sheet);
+//    }
 
     @Scheduled(cron = "0 0 17 * * MON-FRI")
     public void autoSave(){
@@ -121,5 +121,28 @@ public class ExcelServiceImpl implements ExcelService {
 //        header.createCell(i++).setCellValue("약");
 //        header.createCell(i++).setCellValue("재고");
         header.createCell(i++).setCellValue("시간");
+    }
+
+    public void createXss(Workbook workbook){
+        for (int i = 1; i<13;i++){
+            Sheet sheet = workbook.createSheet(i+"월");
+            createHeader(sheet);
+            String year = getYear();
+            String date;
+            if (i < 10){
+                date = year+".0"+i;
+            }
+            else {
+                date = year+"."+i;
+            }
+            List<Questionnaire> questionnaires = excelRepository.findByYearAndMonth(date);
+            createRow(questionnaires, sheet);
+        }
+    }
+
+    public String getYear(){
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy");
+        return now.format(dateTimeFormatter);
     }
 }
