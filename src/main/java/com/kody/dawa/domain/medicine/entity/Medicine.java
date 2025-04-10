@@ -19,7 +19,7 @@ public class Medicine {
 
     private String name;
 
-    private int count;
+    private Long count;
 
     //순환기계 근골격계 이런 계류
     private String body_system;

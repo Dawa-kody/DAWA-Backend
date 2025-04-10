@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MedicineUpdateRequest {
     private String medicineName;
-    private int medicineCount;
+    private Long medicineCount;
 }

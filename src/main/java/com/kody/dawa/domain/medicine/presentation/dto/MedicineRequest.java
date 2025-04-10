@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class MedicineRequest {
     private String medicineName;
     private String medicineType;
-    private int medicineCount;
+    private Long medicineCount;
 }
