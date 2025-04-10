@@ -33,12 +33,24 @@ public class Questionnaire extends BaseTime {
 
     private String gender;
 
+    private String division;
+
     @Column(length = 4)
     private String schoolNumber;
 
-    private String disease;
+    private String disease; //증상
 
-    private String content;
+    private String treatment; //처치상황 (투약 또는 처치)
 
-    private String time;
+    private Long quantity; //수량
+
+    private String medication1; //투약
+
+    private Long quantity1; //수량1
+
+    private String medication2; //투약
+
+    private Long quantity2; //수량2
+
+    private String notes; //비고
 }

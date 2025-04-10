@@ -34,7 +34,7 @@ public class QuestionnaireController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<StudentSearchResponse>> searchStudent(
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String schoolNumber) {
