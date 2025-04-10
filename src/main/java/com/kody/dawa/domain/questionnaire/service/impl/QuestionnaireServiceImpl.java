@@ -25,26 +25,28 @@ import java.util.stream.Collectors;
 public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionnaireRepository questionnaireRepository;
     private final UserRepository userRepository;
-    public List<Questionnaire> createQuestionnaires(List<QuestionnaireRequest> requests) {
-        List<Questionnaire> questionnaires = requests.stream()
-                .map(request -> {
-                    User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
-                            .orElseThrow(() -> new RuntimeException("없는 유저입니다 : " + request.getSchoolNumber()));
+    public void createQuestionnaire(QuestionnaireRequest request) {
+        User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
+                .orElseThrow(() -> new RuntimeException("없는 유저입니다 : " + request.getSchoolNumber()));
 
-                    return Questionnaire.builder()
-                            .serialNumber(request.getSerialNumber())
-                            .userName(request.getUserName())
-                            .user(user)
-                            .schoolNumber(request.getSchoolNumber())
-                            .disease(request.getDisease())
-                            .content(request.getContent())
-                            .time(request.getTime())
-                            .gender(request.getGender())
-                            .build();
-                })
-                .toList();
+        Questionnaire questionnaire = Questionnaire.builder()
+                .serialNumber(request.getSerialNumber())
+                .userName(request.getUserName())
+                .user(user)
+                .schoolNumber(request.getSchoolNumber())
+                .disease(request.getDisease())
+                .gender(request.getGender())
+                .division(request.getDivision())
+                .medication1(request.getMedication1())
+                .medication2(request.getMedication2())
+                .quantity(request.getQuantity())
+                .quantity1(request.getQuantity1())
+                .quantity2(request.getQuantity2())
+                .treatment(request.getTreatment())
+                .notes(request.getNotes())
+                .build();
 
-        return questionnaireRepository.saveAll(questionnaires);
+        questionnaireRepository.save(questionnaire);
     }
 
     public List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay) {
@@ -53,7 +55,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
             yearMonthDay = LocalDate.now().format(formatter);
         }
-        List<Questionnaire> questionnaires = questionnaireRepository.findByYearMonthDay(yearMonthDay);
+        List<Questionnaire> questionnaires = questionnaireRepository.findByYearMonthDayOrderBySerialNumber(yearMonthDay);
 
         return questionnaires.stream()
                 .map(response -> QuestionnaireResponse.builder()
@@ -61,9 +63,15 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                         .userName(response.getUserName())
                         .schoolNumber(response.getSchoolNumber())
                         .disease(response.getDisease())
-                        .content(response.getContent())
-                        .time(response.getTime())
                         .gender(response.getGender())
+                        .division(response.getDivision())
+                        .medication1(response.getMedication1())
+                        .medication2(response.getMedication2())
+                        .quantity(response.getQuantity())
+                        .quantity1(response.getQuantity1())
+                        .quantity2(response.getQuantity2())
+                        .treatment(response.getTreatment())
+                        .notes(response.getNotes())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -99,7 +107,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .map(response -> StudentRecordResponse.builder()
                         .schoolNumber(response.getSchoolNumber())
                         .disease(response.getDisease())
-                        .content(response.getContent())
+                        .content(response.getTreatment())
                         .yearMonthDay(response.getYearMonthDay())
                         .build())
                 .collect(Collectors.toList());

@@ -18,8 +18,8 @@ public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
     @PostMapping("/write")
-    public void createQuestionnaires(@RequestBody List<QuestionnaireRequest> requests) {
-        questionnaireService.createQuestionnaires(requests);
+    public void createQuestionnaires(@RequestBody QuestionnaireRequest request) {
+        questionnaireService.createQuestionnaire(request);
     }
 
     @GetMapping("/date")
