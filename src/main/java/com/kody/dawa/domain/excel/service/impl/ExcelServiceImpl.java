@@ -102,10 +102,10 @@ public class ExcelServiceImpl implements ExcelService {
             row.createCell(i++).setCellValue(questionnaire.getSchoolNumber());
             row.createCell(i++).setCellValue(questionnaire.getGender());
             row.createCell(i++).setCellValue(questionnaire.getDisease());
-//            row.createCell(i++).setCellValue(questionnaire.getContent());
-////            row.createCell(i++).setCellValue(Medicine.getName);
-////            row.createCell(i++).setCellValue(Medicine.getCount);
-//            row.createCell(i++).setCellValue(questionnaire.getTime());
+            row.createCell(i++).setCellValue(questionnaire.getContent());
+//            row.createCell(i++).setCellValue(Medicine.getName);
+//            row.createCell(i++).setCellValue(Medicine.getCount);
+            row.createCell(i++).setCellValue(questionnaire.getTime());
         }
     }
 
