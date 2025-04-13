@@ -98,14 +98,18 @@ public class ExcelServiceImpl implements ExcelService {
             int i = 0;
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
             row.createCell(i++).setCellValue(num++);
-            row.createCell(i++).setCellValue(questionnaire.getUserName());
             row.createCell(i++).setCellValue(questionnaire.getSchoolNumber());
+            row.createCell(i++).setCellValue(questionnaire.getUserName());
             row.createCell(i++).setCellValue(questionnaire.getGender());
+            row.createCell(i++).setCellValue(questionnaire.getDivision());
             row.createCell(i++).setCellValue(questionnaire.getDisease());
-            row.createCell(i++).setCellValue(questionnaire.getContent());
-//            row.createCell(i++).setCellValue(Medicine.getName);
-//            row.createCell(i++).setCellValue(Medicine.getCount);
-            row.createCell(i++).setCellValue(questionnaire.getTime());
+            row.createCell(i++).setCellValue(questionnaire.getTreatment());
+            row.createCell(i++).setCellValue(questionnaire.getQuantity());
+            row.createCell(i++).setCellValue(questionnaire.getMedication1());
+            row.createCell(i++).setCellValue(questionnaire.getQuantity1());
+            row.createCell(i++).setCellValue(questionnaire.getMedication2());
+            row.createCell(i++).setCellValue(questionnaire.getQuantity2());
+            row.createCell(i++).setCellValue(questionnaire.getNotes());
         }
     }
 
@@ -113,14 +117,18 @@ public class ExcelServiceImpl implements ExcelService {
         int i = 0;
         Row header = sheet.createRow(0);
         header.createCell(i++).setCellValue("연번");
+        header.createCell(i++).setCellValue("학년반");
         header.createCell(i++).setCellValue("이름");
-        header.createCell(i++).setCellValue("학번");
         header.createCell(i++).setCellValue("성별");
-        header.createCell(i++).setCellValue("병명");
-        header.createCell(i++).setCellValue("처치");
-//        header.createCell(i++).setCellValue("약");
-//        header.createCell(i++).setCellValue("재고");
-        header.createCell(i++).setCellValue("시간");
+        header.createCell(i++).setCellValue("구분");
+        header.createCell(i++).setCellValue("증산");
+        header.createCell(i++).setCellValue("처치상황");
+        header.createCell(i++).setCellValue("수량");
+        header.createCell(i++).setCellValue("투약1");
+        header.createCell(i++).setCellValue("수량1");
+        header.createCell(i++).setCellValue("투약2");
+        header.createCell(i++).setCellValue("투약2");
+        header.createCell(i++).setCellValue("비고");
     }
 
     public void createXss(Workbook workbook){
