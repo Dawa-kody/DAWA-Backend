@@ -1,7 +1,6 @@
 package com.kody.dawa.domain.medicine.presentation;
 
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineDeleteRequest;
-import com.kody.dawa.domain.medicine.presentation.dto.MedicineGetRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.service.MedicineService;
@@ -47,10 +46,10 @@ public class MedicineController {
         }
     }
 
-    @PostMapping("/get")
-    public ResponseEntity<?> get (@RequestBody MedicineGetRequest request) {
+    @GetMapping("/get")
+    public ResponseEntity<?> get (@RequestParam(required = false) String medicineType) {
         try{
-            return ResponseEntity.ok(medicineService.getAllMedicine(request));
+            return ResponseEntity.ok(medicineService.getAllMedicine(medicineType));
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

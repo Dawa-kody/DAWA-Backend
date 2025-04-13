@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicineUpdateRequest {
+    private Long medicineId;
     private String medicineName;
+    private String medicineType;
     private Long medicineCount;
 }

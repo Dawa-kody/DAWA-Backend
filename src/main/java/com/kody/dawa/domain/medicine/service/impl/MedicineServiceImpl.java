@@ -2,7 +2,6 @@ package com.kody.dawa.domain.medicine.service.impl;
 
 import com.kody.dawa.domain.medicine.entity.Medicine;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineDeleteRequest;
-import com.kody.dawa.domain.medicine.presentation.dto.MedicineGetRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
@@ -30,13 +29,17 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     public Medicine updateMedicine(MedicineUpdateRequest request) {
-        if(medicineRepository.findByName(request.getMedicineName()) == null){
-            throw new IllegalArgumentException("추가되지 않는 약입니다.");
-        }
-        return medicineRepository.save(medicineRepository.findByName(request.getMedicineName()).toBuilder()
-                .count(request.getMedicineCount())
-                .build());
+        Medicine medicine = medicineRepository.findById(request.getMedicineId())
+                .orElseThrow(() -> new RuntimeException("없는 약입니다"));
+
+        medicine.setCount(request.getMedicineCount());
+        medicine.setType(request.getMedicineType());
+        medicine.setName(request.getMedicineName());
+
+        medicineRepository.save(medicine);
+        return medicine;
     }
+
     public void deleteMedicine(MedicineDeleteRequest request) {
         if(medicineRepository.findByName(request.getMedicineName()) == null){
             throw new IllegalArgumentException("추가되지 않는 약입니다.");
@@ -44,7 +47,10 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.deleteByName(request.getMedicineName());
     }
 
-    public List<Medicine> getAllMedicine(MedicineGetRequest request){
-        return medicineRepository.findByType(request.getMedicineType());
+    public List<Medicine> getAllMedicine(String medicineType) {
+        if (medicineType == null || medicineType.isBlank()) {
+            return medicineRepository.findAll();
+        }
+        return medicineRepository.findByType(medicineType);
     }
 }
