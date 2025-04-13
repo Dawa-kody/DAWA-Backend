@@ -1,7 +1,6 @@
 package com.kody.dawa.domain.medicine.service.impl;
 
 import com.kody.dawa.domain.medicine.entity.Medicine;
-import com.kody.dawa.domain.medicine.presentation.dto.MedicineDeleteRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
@@ -42,11 +41,11 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Transactional
-    public void deleteMedicine(MedicineDeleteRequest request) {
-        if(medicineRepository.findByName(request.getMedicineName()) == null){
-            throw new IllegalArgumentException("추가되지 않는 약입니다.");
-        }
-        medicineRepository.deleteByName(request.getMedicineName());
+    public void deleteMedicine(Long id) {
+        Medicine medicine = medicineRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("없는 약입니다"));
+
+        medicineRepository.delete(medicine);
     }
 
     public List<Medicine> getAllMedicine(String medicineType) {

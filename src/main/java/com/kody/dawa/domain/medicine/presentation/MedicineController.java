@@ -1,6 +1,5 @@
 package com.kody.dawa.domain.medicine.presentation;
 
-import com.kody.dawa.domain.medicine.presentation.dto.MedicineDeleteRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.service.MedicineService;
@@ -35,10 +34,10 @@ public class MedicineController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> delete (@RequestBody MedicineDeleteRequest request) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete (@PathVariable Long id) {
         try{
-            medicineService.deleteMedicine(request);
+            medicineService.deleteMedicine(id);
             return ResponseEntity.ok("success");
         }
         catch (Exception e){
