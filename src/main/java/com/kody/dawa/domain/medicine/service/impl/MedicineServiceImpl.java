@@ -6,6 +6,7 @@ import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
 import com.kody.dawa.domain.medicine.service.MedicineService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class MedicineServiceImpl implements MedicineService {
         return medicine;
     }
 
+    @Transactional
     public void deleteMedicine(MedicineDeleteRequest request) {
         if(medicineRepository.findByName(request.getMedicineName()) == null){
             throw new IllegalArgumentException("추가되지 않는 약입니다.");
