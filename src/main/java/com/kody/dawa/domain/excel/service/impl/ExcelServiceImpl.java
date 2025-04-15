@@ -96,6 +96,39 @@ public class ExcelServiceImpl implements ExcelService {
         Long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
             int i = 0;
+            Long quantity = 0L;
+            Long quantity1 = 0L;
+            Long quantity2 = 0L;
+            String medication1 = "없음";
+            String medication2 = "없음";
+            if (questionnaire.getQuantity() == null){
+                quantity = 0L;
+            }else{
+                quantity = questionnaire.getQuantity();
+            }
+            if (questionnaire.getQuantity1() == null){
+                quantity1 = 0L;
+            }
+            else{
+                quantity1 = questionnaire.getQuantity1();
+            }
+            if (questionnaire.getQuantity2() == null){
+                quantity2 = 0L;
+            }
+            else {
+                quantity2 = questionnaire.getQuantity2();
+            }
+
+            if (questionnaire.getMedication1() == null){
+                medication1 = "없음";
+            }else{
+                medication1 = questionnaire.getMedication1();
+            }
+            if (questionnaire.getMedication2() == null){
+                medication2 = "없음";
+            }else {
+                medication2 = questionnaire.getMedication2();
+            }
             Row row = sheet.createRow(sheet.getLastRowNum() + 1);
             row.createCell(i++).setCellValue(num++);
             row.createCell(i++).setCellValue(questionnaire.getSchoolNumber());
@@ -104,11 +137,11 @@ public class ExcelServiceImpl implements ExcelService {
             row.createCell(i++).setCellValue(questionnaire.getDivision());
             row.createCell(i++).setCellValue(questionnaire.getDisease());
             row.createCell(i++).setCellValue(questionnaire.getTreatment());
-            row.createCell(i++).setCellValue(questionnaire.getQuantity());
-            row.createCell(i++).setCellValue(questionnaire.getMedication1());
-            row.createCell(i++).setCellValue(questionnaire.getQuantity1());
-            row.createCell(i++).setCellValue(questionnaire.getMedication2());
-            row.createCell(i++).setCellValue(questionnaire.getQuantity2());
+            row.createCell(i++).setCellValue(quantity);
+            row.createCell(i++).setCellValue(medication1);
+            row.createCell(i++).setCellValue(quantity1);
+            row.createCell(i++).setCellValue(medication2);
+            row.createCell(i++).setCellValue(quantity2);
             row.createCell(i++).setCellValue(questionnaire.getNotes());
         }
     }
