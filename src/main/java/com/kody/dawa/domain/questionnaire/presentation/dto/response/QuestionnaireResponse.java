@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class QuestionnaireResponse {
+    private Long questionnaireId;
     private String serialNumber;
     private String schoolNumber;
     private String userName;

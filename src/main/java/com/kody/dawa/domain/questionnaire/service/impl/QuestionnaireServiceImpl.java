@@ -1,5 +1,7 @@
 package com.kody.dawa.domain.questionnaire.service.impl;
 
+import com.kody.dawa.domain.medicine.entity.Medicine;
+import com.kody.dawa.domain.medicine.repository.MedicineRepository;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
@@ -24,10 +26,47 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionnaireRepository questionnaireRepository;
+    private final MedicineRepository medicineRepository;
     private final UserRepository userRepository;
     public void createQuestionnaire(QuestionnaireRequest request) {
         User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
                 .orElseThrow(() -> new RuntimeException("없는 유저입니다 : " + request.getSchoolNumber()));
+
+        if(request.getQuantity() != null) {
+            Medicine treatment = medicineRepository.findByName(request.getTreatment())
+                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getTreatment()));
+
+            if(treatment.getCount() < request.getQuantity()) {
+                throw new RuntimeException("약 수량이 부족합니다: " + request.getTreatment());
+            }
+
+            treatment.setCount(treatment.getCount() - request.getQuantity());
+            medicineRepository.save(treatment);
+        }
+
+        if(request.getMedication1() != null) {
+            Medicine medicine1 = medicineRepository.findByName(request.getMedication1())
+                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication1()));
+
+            if(medicine1.getCount() < request.getQuantity1()) {
+                throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication1());
+            }
+
+            medicine1.setCount(medicine1.getCount() - request.getQuantity1());
+            medicineRepository.save(medicine1);
+        }
+
+        if(request.getMedication2() != null) {
+            Medicine medicine2 = medicineRepository.findByName(request.getMedication2())
+                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication2()));
+
+            if (medicine2.getCount() < request.getQuantity2()) {
+                throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication2());
+            }
+
+            medicine2.setCount(medicine2.getCount() - request.getQuantity2());
+            medicineRepository.save(medicine2);
+        }
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .serialNumber(request.getSerialNumber())
@@ -59,6 +98,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
         return questionnaires.stream()
                 .map(response -> QuestionnaireResponse.builder()
+                        .questionnaireId(response.getId())
                         .serialNumber(response.getSerialNumber())
                         .userName(response.getUserName())
                         .schoolNumber(response.getSchoolNumber())

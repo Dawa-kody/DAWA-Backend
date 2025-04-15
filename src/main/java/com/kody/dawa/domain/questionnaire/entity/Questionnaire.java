@@ -44,11 +44,11 @@ public class Questionnaire extends BaseTime {
 
     private Long quantity; //수량
 
-    private String medication1; //투약
+    private String medication1; //투약1
 
     private Long quantity1; //수량1
 
-    private String medication2; //투약
+    private String medication2; //투약2
 
     private Long quantity2; //수량2
 
