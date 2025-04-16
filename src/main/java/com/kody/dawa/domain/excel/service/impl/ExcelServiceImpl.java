@@ -46,7 +46,7 @@ public class ExcelServiceImpl implements ExcelService {
 //        createRow(questionnaires, sheet);
 //    }
 
-    @Scheduled(cron = "0 0 17 * * MON-FRI")
+    @Scheduled(cron = "0 22 10 * * MON-FRI")
     public void autoSave(){
         LocalDate now = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM.dd");
