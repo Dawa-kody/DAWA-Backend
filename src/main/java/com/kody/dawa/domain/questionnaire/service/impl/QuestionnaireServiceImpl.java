@@ -150,7 +150,35 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             }
         }
 
+        updateStatisticsOnDelete(questionnaire);
+
         questionnaireRepository.delete(questionnaire);
+    }
+
+
+    private void updateStatisticsOnDelete(Questionnaire questionnaire) {
+        String day = questionnaire.getYearMonthDay();
+        String month = day.substring(0, 7);
+        String year = day.substring(0, 4);
+
+        Gender gender = questionnaire.getUser().getGender();
+        Division division = questionnaire.getDivision();
+
+        decrementStat("DAILY", day, gender, division);
+        decrementStat("MONTHLY", month, gender, division);
+        decrementStat("YEARLY", year, gender, division);
+    }
+
+    private void decrementStat(String type, String date, Gender gender, Division division) {
+        Statistics stat = statisticsRepository.findByDateTypeAndDateAndGenderAndDivision(type, date, gender, division)
+                .orElseThrow(() -> new RuntimeException(type + " 통계가 존재하지 않습니다: " + date));
+
+        if (stat.getCount() > 0) {
+            stat.setCount(stat.getCount() - 1);
+            statisticsRepository.save(stat);
+        } else {
+            throw new RuntimeException(type + " 통계 수치가 0보다 적을 수 없습니다: " + date);
+        }
     }
 
     public List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay) {
