@@ -49,7 +49,7 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     public List<Medicine> getAllMedicine(String medicineType) {
-        if (medicineType == null || medicineType.isBlank()) {
+        if (medicineType.isBlank()) {
             return medicineRepository.findAll();
         }
         return medicineRepository.findByType(medicineType);
