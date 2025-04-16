@@ -49,9 +49,9 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     public List<Medicine> getAllMedicine(String medicineType) {
-        if (medicineType.isBlank()) {
-            return medicineRepository.findAll();
+        if (medicineType == null || medicineType.isBlank()) {
+            return medicineRepository.findByOrderByTimeDesc();
         }
-        return medicineRepository.findByType(medicineType);
+        return medicineRepository.findByTypeOrderByTimeDesc(medicineType);
     }
 }
