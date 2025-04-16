@@ -3,6 +3,7 @@ package com.kody.dawa.domain.medicine.presentation;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineRequest;
 import com.kody.dawa.domain.medicine.presentation.dto.MedicineUpdateRequest;
 import com.kody.dawa.domain.medicine.service.MedicineService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insert (@RequestBody MedicineRequest request) {
+    public ResponseEntity<?> insert (@Valid @RequestBody MedicineRequest request) {
         try {
             return ResponseEntity.ok(medicineService.createMedicine(request));
         }
@@ -25,7 +26,7 @@ public class MedicineController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update (@RequestBody MedicineUpdateRequest request) {
+    public ResponseEntity<?> update (@Valid @RequestBody MedicineUpdateRequest request) {
         try {
             return ResponseEntity.ok(medicineService.updateMedicine(request));
         }
