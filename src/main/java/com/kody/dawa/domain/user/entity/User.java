@@ -1,10 +1,10 @@
 package com.kody.dawa.domain.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.rental.entity.Rental;
+import com.kody.dawa.domain.user.enums.Gender;
 import com.kody.dawa.domain.user.util.StringListConverter;
 import com.kody.dawa.domain.visit.entity.VisitRecord;
 import jakarta.persistence.*;
@@ -29,7 +29,7 @@ public class User {
 
     private String email;
 
-    private String gender;
+    private Gender gender;
 
     private String name;
 

@@ -133,7 +133,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                         .userName(response.getUser().getName())
                         .schoolNumber(response.getUser().getSchoolNumber())
                         .disease(response.getDisease())
-                        .gender(response.getUser().getGender())
+                        .gender(String.valueOf(response.getUser().getGender()))
                         .division(response.getDivision())
                         .medication1(response.getMedication1())
                         .medication2(response.getMedication2())

@@ -5,6 +5,7 @@ import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
 import com.kody.dawa.domain.auth.service.SignupService;
 import com.kody.dawa.domain.user.entity.Role;
 import com.kody.dawa.domain.user.entity.User;
+import com.kody.dawa.domain.user.enums.Gender;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.exception.HttpException;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class SignupServiceImpl implements SignupService {
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .gender(request.getGender())
+                .gender(Gender.valueOf(request.getGender()))
                 .schoolNumber(request.getSchoolNumber())
                 .roles(List.of(Role.ROLE_USER))
                 .build();
