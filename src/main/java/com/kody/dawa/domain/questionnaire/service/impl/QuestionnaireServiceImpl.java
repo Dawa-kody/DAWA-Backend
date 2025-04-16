@@ -36,36 +36,36 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             Medicine treatment = medicineRepository.findByName(request.getTreatment())
                     .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getTreatment()));
 
-            if(treatment.getCount() < request.getQuantity()) {
+            if (treatment.getCount() < request.getQuantity()) {
                 throw new RuntimeException("약 수량이 부족합니다: " + request.getTreatment());
             }
 
             treatment.setCount(treatment.getCount() - request.getQuantity());
             medicineRepository.save(treatment);
-        }
 
-        if(request.getMedication1() != null) {
-            Medicine medicine1 = medicineRepository.findByName(request.getMedication1())
-                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication1()));
+            if (request.getMedication1() != null) {
+                Medicine medicine1 = medicineRepository.findByName(request.getMedication1())
+                        .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication1()));
 
-            if(medicine1.getCount() < request.getQuantity1()) {
-                throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication1());
+                if (medicine1.getCount() < request.getQuantity1()) {
+                    throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication1());
+                }
+
+                medicine1.setCount(medicine1.getCount() - request.getQuantity1());
+                medicineRepository.save(medicine1);
             }
 
-            medicine1.setCount(medicine1.getCount() - request.getQuantity1());
-            medicineRepository.save(medicine1);
-        }
+            if (request.getMedication2() != null) {
+                Medicine medicine2 = medicineRepository.findByName(request.getMedication2())
+                        .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication2()));
 
-        if(request.getMedication2() != null) {
-            Medicine medicine2 = medicineRepository.findByName(request.getMedication2())
-                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication2()));
+                if (medicine2.getCount() < request.getQuantity2()) {
+                    throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication2());
+                }
 
-            if (medicine2.getCount() < request.getQuantity2()) {
-                throw new RuntimeException("약 수량이 부족합니다: " + request.getMedication2());
+                medicine2.setCount(medicine2.getCount() - request.getQuantity2());
+                medicineRepository.save(medicine2);
             }
-
-            medicine2.setCount(medicine2.getCount() - request.getQuantity2());
-            medicineRepository.save(medicine2);
         }
 
         Questionnaire questionnaire = Questionnaire.builder()

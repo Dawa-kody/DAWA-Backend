@@ -17,7 +17,7 @@ public class MedicineServiceImpl implements MedicineService {
     private final MedicineRepository medicineRepository;
 
     public Medicine createMedicine(MedicineRequest request) {
-        if(medicineRepository.findByName(request.getMedicineName()) != null){
+        if(medicineRepository.findByName(request.getMedicineName()).isPresent()){
             throw new IllegalArgumentException("이미 추가된 약입니다.");
         }
         Medicine medicine = Medicine.builder()
