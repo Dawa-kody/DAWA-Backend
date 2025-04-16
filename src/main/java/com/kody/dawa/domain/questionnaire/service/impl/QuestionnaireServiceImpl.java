@@ -71,11 +71,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .serialNumber(request.getSerialNumber())
-                .userName(request.getUserName())
                 .user(user)
-                .schoolNumber(request.getSchoolNumber())
                 .disease(request.getDisease())
-                .gender(request.getGender())
                 .division(request.getDivision())
                 .medication1(request.getMedication1())
                 .medication2(request.getMedication2())
@@ -133,10 +130,10 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .map(response -> QuestionnaireResponse.builder()
                         .questionnaireId(response.getId())
                         .serialNumber(response.getSerialNumber())
-                        .userName(response.getUserName())
-                        .schoolNumber(response.getSchoolNumber())
+                        .userName(response.getUser().getName())
+                        .schoolNumber(response.getUser().getSchoolNumber())
                         .disease(response.getDisease())
-                        .gender(response.getGender())
+                        .gender(response.getUser().getGender())
                         .division(response.getDivision())
                         .medication1(response.getMedication1())
                         .medication2(response.getMedication2())
@@ -162,9 +159,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
             latestQuestionnaire.ifPresent(questionnaire -> {
                 responses.add(StudentSearchResponse.builder()
-                        .userName(questionnaire.getUserName())
+                        .userName(questionnaire.getUser().getName())
                         .yearMonthDay(questionnaire.getYearMonthDay())
-                        .schoolNumber(questionnaire.getSchoolNumber())
+                        .schoolNumber(questionnaire.getUser().getSchoolNumber())
                         .userId(questionnaire.getUser().getId())
                         .build());
             });
@@ -178,7 +175,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
         return questionnaires.stream()
                 .map(response -> StudentRecordResponse.builder()
-                        .schoolNumber(response.getSchoolNumber())
+                        .schoolNumber(response.getUser().getSchoolNumber())
                         .disease(response.getDisease())
                         .content(response.getTreatment())
                         .yearMonthDay(response.getYearMonthDay())

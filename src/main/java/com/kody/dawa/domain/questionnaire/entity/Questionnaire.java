@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.questionnaire.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kody.dawa.domain.questionnaire.enums.Division;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.global.entity.BaseTime;
 import jakarta.persistence.*;
@@ -8,8 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Table(name = "questionnaire")
 @Entity
@@ -19,24 +20,20 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 public class Questionnaire extends BaseTime {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    private String serialNumber;
+    @Column(nullable = false)
+    private Long serialNumber;
 
-    private String userName;
-
-    private String gender;
-
-    private String division;
-
-    @Column(length = 4)
-    private String schoolNumber;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Division division;
 
     private String disease; //증상
 

@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.questionnaire.presentation.dto.request;
 
+import com.kody.dawa.domain.questionnaire.enums.Division;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionnaireRequest {
-    private String serialNumber;
+    private Long serialNumber;
     private String schoolNumber;
     private String userName;
     private String gender;
-    private String division;
+    private Division division;
     private String disease;
     private String treatment;
     private Long quantity;
