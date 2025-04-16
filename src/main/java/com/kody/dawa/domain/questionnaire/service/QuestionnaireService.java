@@ -4,6 +4,7 @@ import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
+import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireStatisticsResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentSearchResponse;
 
@@ -14,7 +15,7 @@ public interface QuestionnaireService {
 
     void deleteQuestionnaire(QuestionnaireDeleteRequest request);
 
-    List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay);
+    QuestionnaireStatisticsResponse getQuestionnairesByYearMonthDay(String yearMonthDay);
 
     List<StudentRecordResponse> recordStudent(Long id);
 

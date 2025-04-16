@@ -29,6 +29,7 @@ public class User {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String name;

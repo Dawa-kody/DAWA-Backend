@@ -3,6 +3,7 @@ package com.kody.dawa.domain.questionnaire.presentation;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
+import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireStatisticsResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentSearchResponse;
 import com.kody.dawa.domain.questionnaire.service.QuestionnaireService;
@@ -29,8 +30,8 @@ public class QuestionnaireController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<List<QuestionnaireResponse>> getQuestionnairesByYearMonthDay(@RequestParam(required = false) String yearMonthDay) {
-        List<QuestionnaireResponse> response = questionnaireService.getQuestionnairesByYearMonthDay(yearMonthDay);
+    public ResponseEntity<QuestionnaireStatisticsResponse> getQuestionnairesByYearMonthDay(@RequestParam(required = false) String yearMonthDay) {
+        QuestionnaireStatisticsResponse response = questionnaireService.getQuestionnairesByYearMonthDay(yearMonthDay);
         return ResponseEntity.ok(response);
     }
 

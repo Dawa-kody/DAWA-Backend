@@ -19,4 +19,8 @@ public enum Division {
     OTHER("기타");
 
     private final String name;
+
+    public String getName() {
+        return name;
+    }
 }

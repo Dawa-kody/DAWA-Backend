@@ -8,6 +8,7 @@ import com.kody.dawa.domain.questionnaire.enums.Division;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
+import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireStatisticsResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentSearchResponse;
 import com.kody.dawa.domain.questionnaire.repository.QuestionnaireRepository;
@@ -21,10 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -181,7 +179,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         }
     }
 
-    public List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay) {
+    public QuestionnaireStatisticsResponse getQuestionnairesByYearMonthDay(String yearMonthDay) {
 
         if (yearMonthDay == null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
@@ -189,7 +187,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         }
         List<Questionnaire> questionnaires = questionnaireRepository.findByYearMonthDayOrderBySerialNumber(yearMonthDay);
 
-        return questionnaires.stream()
+        List<QuestionnaireResponse> questionnaireResponses = questionnaires.stream()
                 .map(response -> QuestionnaireResponse.builder()
                         .questionnaireId(response.getId())
                         .serialNumber(response.getSerialNumber())
@@ -207,6 +205,41 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                         .notes(response.getNotes())
                         .build())
                 .collect(Collectors.toList());
+
+        Map<String, Map<String, Map<String, Integer>>> groupedStatistics = new LinkedHashMap<>();
+        List<String> types = List.of("일계", "월계", "누계");
+
+        for (String type : types) {
+            List<Statistics> stats = statisticsRepository.findByDateTypeAndDate(type, yearMonthDay);
+
+            Map<String, Map<String, Integer>> genderMap = new LinkedHashMap<>();
+            genderMap.put("남", new LinkedHashMap<>());
+            genderMap.put("여", new LinkedHashMap<>());
+
+            for (Division division : Division.values()) {
+                genderMap.get("남").put(division.getName(), 0);
+                genderMap.get("여").put(division.getName(), 0);
+            }
+
+            genderMap.get("남").put("계", 0);
+            genderMap.get("여").put("계", 0);
+
+            for (Statistics stat : stats) {
+                String gender = stat.getGender().name().equals("MALE") ? "남" : "여";
+                String divisionName = stat.getDivision().getName();
+                int count = stat.getCount().intValue();
+
+                genderMap.get(gender).put(divisionName, count);
+                genderMap.get(gender).put("계", genderMap.get(gender).get("계") + count);
+            }
+
+            groupedStatistics.put(type, genderMap);
+        }
+
+        return QuestionnaireStatisticsResponse.builder()
+                .questionnaires(questionnaireResponses)
+                .groupedStatistics(groupedStatistics)
+                .build();
     }
 
     public List<StudentSearchResponse> searchStudent(String userName, String schoolNumber) {
