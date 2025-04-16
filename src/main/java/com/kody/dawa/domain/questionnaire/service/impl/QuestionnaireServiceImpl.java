@@ -3,14 +3,18 @@ package com.kody.dawa.domain.questionnaire.service.impl;
 import com.kody.dawa.domain.medicine.entity.Medicine;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
+import com.kody.dawa.domain.questionnaire.entity.Statistics;
+import com.kody.dawa.domain.questionnaire.enums.Division;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentSearchResponse;
 import com.kody.dawa.domain.questionnaire.repository.QuestionnaireRepository;
+import com.kody.dawa.domain.questionnaire.repository.StatisticsRepository;
 import com.kody.dawa.domain.questionnaire.service.QuestionnaireService;
 import com.kody.dawa.domain.user.entity.User;
+import com.kody.dawa.domain.user.enums.Gender;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionnaireRepository questionnaireRepository;
     private final MedicineRepository medicineRepository;
     private final UserRepository userRepository;
+    private final StatisticsRepository statisticsRepository;
     public void createQuestionnaire(QuestionnaireRequest request) {
         User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
                 .orElseThrow(() -> new RuntimeException("없는 유저입니다 : " + request.getSchoolNumber()));
@@ -84,7 +89,37 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .build();
 
         questionnaireRepository.save(questionnaire);
+
+        updateStatistics(questionnaire);
     }
+
+    private void updateStatistics(Questionnaire questionnaire) {
+        String day = questionnaire.getYearMonthDay();
+        String month = day.substring(0, 7);
+        String year = day.substring(0, 4);
+
+        Gender gender = questionnaire.getUser().getGender();
+        Division division = questionnaire.getDivision();
+
+        updateStat("DAILY", day, gender, division);
+        updateStat("MONTHLY", month, gender, division);
+        updateStat("YEARLY", year, gender, division);
+    }
+
+    private void updateStat(String type, String date, Gender gender, Division division) {
+        Statistics stat = statisticsRepository.findByDateTypeAndDateAndGenderAndDivision(type, date, gender, division)
+                .orElse(Statistics.builder()
+                        .dateType(type)
+                        .date(date)
+                        .gender(gender)
+                        .division(division)
+                        .count(0L)
+                        .build());
+
+        stat.setCount(stat.getCount() + 1);
+        statisticsRepository.save(stat);
+    }
+
 
     public void deleteQuestionnaire(QuestionnaireDeleteRequest request) {
 

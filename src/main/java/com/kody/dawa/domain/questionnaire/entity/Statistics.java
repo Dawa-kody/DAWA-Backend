@@ -2,13 +2,11 @@ package com.kody.dawa.domain.questionnaire.entity;
 
 import com.kody.dawa.domain.questionnaire.enums.Division;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.kody.dawa.domain.user.enums.Gender;
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
