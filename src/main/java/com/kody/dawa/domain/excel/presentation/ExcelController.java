@@ -91,7 +91,7 @@ public class ExcelController {
 
     //유저 role 확인해서 엑셀가능 시키기
     @PostMapping
-    public ResponseEntity<?> downloadSavedExcel(@RequestBody AutoRequest request, @RequestHeader String authorization) throws IOException {
+    public ResponseEntity<?> downloadSavedExcel(@RequestBody AutoRequest request, @RequestHeader(value = "authorization", required = false) String authorization) throws IOException {
         String filePath = "C:/data/auto_save/" + request.getDate() + ".xlsx";
         File file = new File(filePath);
 
