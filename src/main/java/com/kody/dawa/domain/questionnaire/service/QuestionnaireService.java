@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.questionnaire.service;
 
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
+import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
@@ -10,6 +11,8 @@ import java.util.List;
 
 public interface QuestionnaireService {
     void createQuestionnaire(QuestionnaireRequest request);
+
+    void deleteQuestionnaire(QuestionnaireDeleteRequest request);
 
     List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay);
 

@@ -3,6 +3,7 @@ package com.kody.dawa.domain.questionnaire.service.impl;
 import com.kody.dawa.domain.medicine.entity.Medicine;
 import com.kody.dawa.domain.medicine.repository.MedicineRepository;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
+import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
@@ -43,7 +44,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             treatment.setCount(treatment.getCount() - request.getQuantity());
             medicineRepository.save(treatment);
 
-            if (request.getMedication1() != null) {
+            if (request.getMedication1() != null && !request.getMedication1().trim().isEmpty()) {
                 Medicine medicine1 = medicineRepository.findByName(request.getMedication1())
                         .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication1()));
 
@@ -55,7 +56,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 medicineRepository.save(medicine1);
             }
 
-            if (request.getMedication2() != null) {
+            if (request.getMedication2() != null && !request.getMedication2().trim().isEmpty()) {
                 Medicine medicine2 = medicineRepository.findByName(request.getMedication2())
                         .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication2()));
 
@@ -86,6 +87,38 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .build();
 
         questionnaireRepository.save(questionnaire);
+    }
+
+    public void deleteQuestionnaire(QuestionnaireDeleteRequest request) {
+
+        Questionnaire questionnaire = questionnaireRepository.findById(request.getQuestionnaireId())
+                    .orElseThrow(() -> new RuntimeException("해당 문진표가 존재하지 않습니다: " + request.getQuestionnaireId()));
+
+        if(request.getQuantity() != null) {
+            Medicine treatment = medicineRepository.findByName(request.getTreatment())
+                    .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getTreatment()));
+
+            treatment.setCount(treatment.getCount() + request.getQuantity());
+            medicineRepository.save(treatment);
+
+            if (request.getMedication1() != null && !request.getMedication1().trim().isEmpty()) {
+                Medicine medicine1 = medicineRepository.findByName(request.getMedication1())
+                        .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication1()));
+
+                medicine1.setCount(medicine1.getCount() + request.getQuantity1());
+                medicineRepository.save(medicine1);
+            }
+
+            if (request.getMedication2() != null && !request.getMedication2().trim().isEmpty()) {
+                Medicine medicine2 = medicineRepository.findByName(request.getMedication2())
+                        .orElseThrow(() -> new RuntimeException("해당 약이 존재하지 않습니다: " + request.getMedication2()));
+
+                medicine2.setCount(medicine2.getCount() + request.getQuantity2());
+                medicineRepository.save(medicine2);
+            }
+        }
+
+        questionnaireRepository.delete(questionnaire);
     }
 
     public List<QuestionnaireResponse> getQuestionnairesByYearMonthDay(String yearMonthDay) {

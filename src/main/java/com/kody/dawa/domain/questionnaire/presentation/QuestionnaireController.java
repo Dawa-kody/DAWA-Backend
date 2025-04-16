@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.questionnaire.presentation;
 
+import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireDeleteRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.request.QuestionnaireRequest;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.QuestionnaireResponse;
 import com.kody.dawa.domain.questionnaire.presentation.dto.response.StudentRecordResponse;
@@ -18,8 +19,13 @@ public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
     @PostMapping("/write")
-    public void createQuestionnaires(@RequestBody QuestionnaireRequest request) {
+    public void createQuestionnaire(@RequestBody QuestionnaireRequest request) {
         questionnaireService.createQuestionnaire(request);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteQuestionnaire(@RequestBody QuestionnaireDeleteRequest request) {
+        questionnaireService.deleteQuestionnaire(request);
     }
 
     @GetMapping("/date")
