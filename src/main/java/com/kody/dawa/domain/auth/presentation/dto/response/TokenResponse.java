@@ -1,5 +1,5 @@
 package com.kody.dawa.domain.auth.presentation.dto.response;
-import com.kody.dawa.domain.user.entity.Role;
+import com.kody.dawa.domain.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

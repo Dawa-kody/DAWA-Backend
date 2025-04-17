@@ -3,7 +3,6 @@ package com.kody.dawa.domain.auth.service.impl;
 import com.kody.dawa.domain.auth.presentation.dto.request.SigninRequest;
 import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
 import com.kody.dawa.domain.auth.service.SigninService;
-import com.kody.dawa.domain.user.entity.Role;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.exception.HttpException;

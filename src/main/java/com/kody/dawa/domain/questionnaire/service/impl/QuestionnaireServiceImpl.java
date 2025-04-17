@@ -180,11 +180,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     public QuestionnaireStatisticsResponse getQuestionnairesByYearMonthDay(String yearMonthDay) {
-
         if (yearMonthDay == null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
             yearMonthDay = LocalDate.now().format(formatter);
         }
+
         List<Questionnaire> questionnaires = questionnaireRepository.findByYearMonthDayOrderBySerialNumber(yearMonthDay);
 
         List<QuestionnaireResponse> questionnaireResponses = questionnaires.stream()
@@ -206,11 +206,28 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                         .build())
                 .collect(Collectors.toList());
 
+        Map<String, String> typeToDateType = Map.of(
+                "일계", "DAILY",
+                "월계", "MONTHLY",
+                "누계", "YEARLY"
+        );
+
         Map<String, Map<String, Map<String, Integer>>> groupedStatistics = new LinkedHashMap<>();
         List<String> types = List.of("일계", "월계", "누계");
 
         for (String type : types) {
-            List<Statistics> stats = statisticsRepository.findByDateTypeAndDate(type, yearMonthDay);
+            String dateType = typeToDateType.getOrDefault(type, "DAILY");
+
+            String date;
+            if (dateType.equals("DAILY")) {
+                date = yearMonthDay;
+            } else if (dateType.equals("MONTHLY")) {
+                date = yearMonthDay.substring(0, 7);
+            } else {
+                date = yearMonthDay.substring(0, 4);
+            }
+
+            List<Statistics> stats = statisticsRepository.findByDateTypeAndDate(dateType, date);
 
             Map<String, Map<String, Integer>> genderMap = new LinkedHashMap<>();
             genderMap.put("남", new LinkedHashMap<>());
@@ -225,12 +242,12 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
             genderMap.get("여").put("계", 0);
 
             for (Statistics stat : stats) {
-                String gender = stat.getGender().name().equals("MALE") ? "남" : "여";
+                String genderKey = stat.getGender().getShortName();
                 String divisionName = stat.getDivision().getName();
                 int count = stat.getCount().intValue();
 
-                genderMap.get(gender).put(divisionName, count);
-                genderMap.get(gender).put("계", genderMap.get(gender).get("계") + count);
+                genderMap.get(genderKey).put(divisionName, count);
+                genderMap.get(genderKey).put("계", genderMap.get(genderKey).get("계") + count);
             }
 
             groupedStatistics.put(type, genderMap);
@@ -241,6 +258,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .groupedStatistics(groupedStatistics)
                 .build();
     }
+
+
 
     public List<StudentSearchResponse> searchStudent(String userName, String schoolNumber) {
         List<User> users = userRepository.findByNameOrSchoolNumber(userName, schoolNumber);

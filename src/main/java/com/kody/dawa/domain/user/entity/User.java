@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.user.enums.Gender;
+import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.util.StringListConverter;
 import com.kody.dawa.domain.visit.entity.VisitRecord;
 import jakarta.persistence.*;

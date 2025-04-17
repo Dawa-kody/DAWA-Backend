@@ -1,6 +1,6 @@
 package com.kody.dawa.global.security.jwt;
 import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
-import com.kody.dawa.domain.user.entity.Role;
+import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.global.entity.TokenType;
 import com.kody.dawa.global.exception.HttpException;
 import io.jsonwebtoken.*;

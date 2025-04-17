@@ -1,4 +1,4 @@
-package com.kody.dawa.domain.user.entity;
+package com.kody.dawa.domain.user.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 @Getter

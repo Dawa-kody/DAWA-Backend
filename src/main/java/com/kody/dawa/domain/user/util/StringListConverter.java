@@ -1,5 +1,5 @@
 package com.kody.dawa.domain.user.util;
-import com.kody.dawa.domain.user.entity.Role;
+import com.kody.dawa.domain.user.enums.Role;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
