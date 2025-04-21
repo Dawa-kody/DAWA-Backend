@@ -10,4 +10,5 @@ public interface ExcelService {
 //    void createXssMonth(ExcelDateRequest request, Sheet sheet);
 //    void createXssYear(ExcelDateRequest request, Sheet sheet);
     void createXss(Workbook workbook);
+    void createDate(Workbook workbook,String date);
 }

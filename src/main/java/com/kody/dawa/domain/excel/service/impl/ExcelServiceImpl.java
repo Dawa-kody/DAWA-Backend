@@ -1,7 +1,5 @@
 package com.kody.dawa.domain.excel.service.impl;
 
-import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
-import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.repository.ExcelRepository;
 import com.kody.dawa.domain.excel.service.ExcelService;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
@@ -9,13 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,61 +39,60 @@ public class ExcelServiceImpl implements ExcelService {
 //        createRow(questionnaires, sheet);
 //    }
 
-    @Scheduled(cron = "0 22 10 * * MON-FRI")
-    public void autoSave(){
-        LocalDate now = LocalDate.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM.dd");
-        String date = now.format(dateTimeFormatter);
+//    @Scheduled(cron = "0 22 10 * * MON-FRI")
+//    public void autoSave(){
+//        LocalDate now = LocalDate.now();
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM.dd");
+//        String date = now.format(dateTimeFormatter);
+//
+//        List<Questionnaire> questionnaires = excelRepository.findByFormattedDate(date);
+//        saveToExcel(questionnaires,date);
+//    }
 
-        List<Questionnaire> questionnaires = excelRepository.findByFormattedDate(date);
-        saveToExcel(questionnaires,date);
-    }
-
-    private void saveToExcel(List<Questionnaire> questionnaires, String date) {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Questionnaires");
-
-        createHeader(sheet);
-        createRow(questionnaires, sheet);
-
-        String directoryPath = "C:/data/auto_save/";
-        String filePath = directoryPath + date + ".xlsx";
-
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            boolean created = directory.mkdirs();
-            if (created) {
-                System.out.println("📂 디렉토리 생성 완료: " + directoryPath);
-            } else {
-                System.err.println("❌ 디렉토리 생성 실패!");
-                return;
-            }
-        }
-
-        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-            workbook.write(fileOut);
-            System.out.println("✅ Excel 파일 저장 완료: " + filePath);
-        } catch (IOException e) {
-            System.err.println("❌ Excel 저장 중 오류 발생: " + e.getMessage());
-        }
-
-        try {
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+//    private void saveToExcel(List<Questionnaire> questionnaires, String date) {
+//        Workbook workbook = new XSSFWorkbook();
+//        Sheet sheet = workbook.createSheet("Questionnaires");
+//
+//        createHeader(sheet);
+//        createRow(questionnaires, sheet);
+//
+//        String directoryPath = "C:/data/auto_save/";
+//        String filePath = directoryPath + date + ".xlsx";
+//
+//        File directory = new File(directoryPath);
+//        if (!directory.exists()) {
+//            boolean created = directory.mkdirs();
+//            if (created) {
+//                System.out.println("📂 디렉토리 생성 완료: " + directoryPath);
+//            } else {
+//                System.err.println("❌ 디렉토리 생성 실패!");
+//                return;
+//            }
+//        }
+//
+//        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+//            workbook.write(fileOut);
+//            System.out.println("✅ Excel 파일 저장 완료: " + filePath);
+//        } catch (IOException e) {
+//            System.err.println("❌ Excel 저장 중 오류 발생: " + e.getMessage());
+//        }
+//
+//        try {
+//            workbook.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void createRow(List<Questionnaire> questionnaires, Sheet sheet){
-        Long num = 1L;
+        long num = 1L;
         for (Questionnaire questionnaire : questionnaires) {
             int i = 0;
-            Long quantity = 0L;
-            Long quantity1 = 0L;
-            Long quantity2 = 0L;
-            String medication1 = "없음";
-            String medication2 = "없음";
+            long quantity;
+            long quantity1;
+            long quantity2;
+            String medication1;
+            String medication2;
             if (questionnaire.getQuantity() == null){
                 quantity = 0L;
             }else{
@@ -142,7 +134,7 @@ public class ExcelServiceImpl implements ExcelService {
             row.createCell(i++).setCellValue(quantity1);
             row.createCell(i++).setCellValue(medication2);
             row.createCell(i++).setCellValue(quantity2);
-            row.createCell(i++).setCellValue(questionnaire.getNotes());
+            row.createCell(i).setCellValue(questionnaire.getNotes());
         }
     }
 
@@ -161,7 +153,14 @@ public class ExcelServiceImpl implements ExcelService {
         header.createCell(i++).setCellValue("수량1");
         header.createCell(i++).setCellValue("투약2");
         header.createCell(i++).setCellValue("수량2");
-        header.createCell(i++).setCellValue("비고");
+        header.createCell(i).setCellValue("비고");
+    }
+
+    public void createDate(Workbook workbook, String date){
+        Sheet sheet = workbook.createSheet();
+        createHeader(sheet);
+        List<Questionnaire> questionnaires = excelRepository.findByYearMonthDay(date);
+        createRow(questionnaires, sheet);
     }
 
     public void createXss(Workbook workbook){
