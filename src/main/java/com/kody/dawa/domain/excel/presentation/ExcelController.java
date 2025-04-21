@@ -1,28 +1,13 @@
 package com.kody.dawa.domain.excel.presentation;
 
 import com.kody.dawa.domain.excel.presentation.dto.request.AutoRequest;
-import com.kody.dawa.domain.excel.presentation.dto.request.ExcelDateRequest;
-import com.kody.dawa.domain.excel.presentation.dto.request.ExcelStudentRequest;
 import com.kody.dawa.domain.excel.service.ExcelService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 @RequestMapping("/excel")
@@ -91,18 +76,28 @@ public class ExcelController {
 
     //유저 role 확인해서 엑셀가능 시키기
     @PostMapping
-    public ResponseEntity<?> downloadSavedExcel(@RequestBody AutoRequest request, @RequestHeader(value = "authorization", required = false) String authorization) throws IOException {
-        String filePath = "C:/data/auto_save/" + request.getDate() + ".xlsx";
-        File file = new File(filePath);
+    public void downloadSavedExcel(HttpServletResponse response, @RequestBody AutoRequest request, @RequestHeader(value = "authorization", required = false) String authorization) throws IOException {
+//        String filePath = "C:/data/auto_save/" + request.getDate() + ".xlsx";
+//        File file = new File(filePath);
+//
+//        if (!file.exists()) {
+//            return ResponseEntity.badRequest().body("그날애 관련된 값이 없습니다.");
+//        }
 
-        if (!file.exists()) {
-            return ResponseEntity.badRequest().body("그날애 관련된 값이 없습니다.");
+//        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(resource);
+
+        String fileName = request.getDate()+".xlsx";
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+        try (Workbook workbook = new XSSFWorkbook()){
+            excelService.createDate(workbook,request.getDate());
+            workbook.write(response.getOutputStream());
         }
 
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
     }
 }
