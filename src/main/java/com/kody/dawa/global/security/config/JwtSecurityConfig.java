@@ -1,6 +1,6 @@
 package com.kody.dawa.global.security.config;
 import com.kody.dawa.global.filter.JwtFilter;
-import com.kody.dawa.global.security.jwt.TokenProvider;
+import com.kody.dawa.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private final TokenProvider tokenProvider;
+    private final JwtProvider tokenProvider;
 
     @Override
     public void configure(HttpSecurity http) {

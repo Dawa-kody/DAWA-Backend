@@ -1,6 +1,7 @@
 package com.kody.dawa.global.security.jwt;
 import com.kody.dawa.global.auth.AuthDetailsService;
 import com.kody.dawa.global.entity.JwtType;
+import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.dto.JwtDetails;
 import com.kody.dawa.global.util.DateUtil;
 import io.jsonwebtoken.*;
@@ -13,7 +14,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Date;
-import java.util.UUID;
 
 @Component
 public class JwtProvider {
@@ -33,6 +33,15 @@ public class JwtProvider {
         UserDetails userDetails = authDetailsService.loadUserByUsername(payload.getSubject());
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    public boolean validateToken(String token, JwtType jwtType) {
+        try {
+            getPayload(token, jwtType);
+            return true;
+        } catch (HttpException e) {
+            return false;
+        }
     }
 
     public String resolveToken(String token) {
@@ -76,7 +85,7 @@ public class JwtProvider {
         }
     }
 
-    public JwtDetails generateToken(UUID id, JwtType jwtType) {
+    public JwtDetails generateToken(Long id, JwtType jwtType) {
         long tokenExpires = jwtType == JwtType.ACCESS_TOKEN
                 ? jwtProperties.getAccessTokenExpires()
                 : jwtProperties.getRefreshTokenExpires();
@@ -92,7 +101,7 @@ public class JwtProvider {
 
         String token = Jwts
                 .builder()
-                .subject(id.toString())
+                .subject(String.valueOf(id))
                 .signWith(signingKey)
                 .issuedAt(new Date())
                 .expiration(DateUtil.toDate(expiredAt))
