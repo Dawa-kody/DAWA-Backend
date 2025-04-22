@@ -14,16 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EmailVerifyServiceImpl implements EmailVerifyService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
     private final EmailVerifyCodeRepository emailVerifyCodeRepository;
 
