@@ -42,6 +42,9 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column(name = "email_verify_status", columnDefinition = "TINYINT(1)")
+    private boolean emailVerifyStatus;
+
     @Convert(converter = StringListConverter.class)
     private List<Role> roles;
 
