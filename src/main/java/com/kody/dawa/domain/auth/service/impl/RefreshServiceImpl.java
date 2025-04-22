@@ -4,7 +4,7 @@ import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
 import com.kody.dawa.domain.auth.service.RefreshService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
-import com.kody.dawa.global.entity.TokenType;
+import com.kody.dawa.global.entity.JwtType;
 import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.TokenProvider;
 import jakarta.transaction.Transactional;
@@ -32,14 +32,14 @@ public class RefreshServiceImpl implements RefreshService {
             throw new HttpException(HttpStatus.BAD_REQUEST, "엑세스 토큰과 리프레스 토큰이 모두 만료되었습니다.");
         } else if(validateAccess) {
             return new TokenResponse(
-                    tokenProvider.generateToken(user.getId(), TokenType.ACCESS),
+                    tokenProvider.generateToken(user.getId(), JwtType.ACCESS),
                     refresh,
                     user.getRoles().get(0)
             );
         } else if(validateRefresh) {
             return new TokenResponse(
                     access,
-                    tokenProvider.generateToken(user.getId(), TokenType.REFRESH),
+                    tokenProvider.generateToken(user.getId(), JwtType.REFRESH),
                     user.getRoles().get(0)
             );
         } else {

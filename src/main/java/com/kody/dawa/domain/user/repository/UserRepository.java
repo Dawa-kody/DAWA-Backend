@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.user.repository;
 
+import com.kody.dawa.global.entity.UserCredential;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,4 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByNameOrSchoolNumber(String name, String schoolNumber);
 
+    Optional<UserCredential> findCredentialById(Long userId);
 }

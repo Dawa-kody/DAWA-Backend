@@ -43,6 +43,7 @@ cloud:
       auto: false
 
 jwt:
-  access: 99999999999999999
-  refresh: 259200000
-  secret: ${JWT_SECRET}
+  accessTokenKey: ${JWT_ACCESS_TOKEN_KEY}
+  accessTokenExpires: 1800000
+  refreshTokenKey: ${JWT_REFRESH_TOKEN_KEY}
+  refreshTokenExpires: 259200000
