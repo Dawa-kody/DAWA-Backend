@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.auth.service.impl;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupTeacherRequest;
+import com.kody.dawa.domain.auth.service.signupTeacherService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.repository.UserRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class signupTeacherServiceImpl {
+public class signupTeacherServiceImpl implements signupTeacherService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Transactional
