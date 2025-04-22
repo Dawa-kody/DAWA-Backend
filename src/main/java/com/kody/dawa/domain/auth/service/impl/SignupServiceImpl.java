@@ -1,7 +1,6 @@
 package com.kody.dawa.domain.auth.service.impl;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupRequest;
-import com.kody.dawa.domain.auth.presentation.dto.response.TokenResponse;
 import com.kody.dawa.domain.auth.service.SignupService;
 import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.entity.User;
@@ -23,7 +22,7 @@ public class SignupServiceImpl implements SignupService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TokenResponse execute(SignupRequest request) {
+    public void execute(SignupRequest request) {
         if(userRepository.existsUserByEmail(request.getEmail()))
             throw new HttpException(HttpStatus.BAD_REQUEST, "이미 해당 이름을 사용하는 멤버가 존재합니다.");
         User user = User.builder()
