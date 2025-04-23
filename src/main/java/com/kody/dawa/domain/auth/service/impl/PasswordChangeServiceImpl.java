@@ -5,6 +5,7 @@ import com.kody.dawa.domain.auth.entity.enums.VerifyCodeType;
 import com.kody.dawa.domain.auth.presentation.dto.request.EmailCodeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.PasswordChangeRequest;
 import com.kody.dawa.domain.auth.repository.AuthCodeRepository;
+import com.kody.dawa.domain.auth.service.PasswordChangeService;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.global.exception.HttpException;
@@ -17,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
-public class PasswordChangeServiceImpl {
+public class PasswordChangeServiceImpl implements PasswordChangeService {
     private final AuthCodeRepository authCodeRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
