@@ -19,7 +19,7 @@ public class SignupServiceImpl implements SignupService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Transactional
-    public void signupStudent(SignupRequest request) {
+    public void signup(SignupRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
 

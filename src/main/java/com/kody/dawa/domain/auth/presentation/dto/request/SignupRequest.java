@@ -21,11 +21,5 @@ public class SignupRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private Gender gender;
-
-    @NotBlank
-    private String name;
-
-    @NotBlank
-    private String schoolNumber;
+    private String healthIssues;
 }

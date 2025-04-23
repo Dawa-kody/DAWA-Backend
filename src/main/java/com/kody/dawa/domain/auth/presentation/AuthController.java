@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/student")
-    public void signupStudent(@RequestBody @Valid SignupRequest request) {
-        signupStudentService.signupStudent(request);
+    public void signup(@RequestBody @Valid SignupRequest request) {
+        signupStudentService.signup(request);
     }
 }
