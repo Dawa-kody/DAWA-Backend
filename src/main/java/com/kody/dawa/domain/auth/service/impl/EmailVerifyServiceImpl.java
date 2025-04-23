@@ -21,14 +21,14 @@ import org.springframework.stereotype.Service;
 public class EmailVerifyServiceImpl implements EmailVerifyService {
     private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
-    private final AuthCodeRepository emailVerifyCodeRepository;
+    private final AuthCodeRepository authCodeRepository;
 
     @Transactional
     public void sendSignupMail(EmailCodeRequest request) {
         if(userRepository.existsUserByEmail(request.getEmail()))
             throw new HttpException(HttpStatus.BAD_REQUEST, "이미 해당 메일을 사용하는 유저가 존재합니다.");
-        emailVerifyCodeRepository.deleteByEmail(request.getEmail());
-        AuthCode emailVerifyCode = emailVerifyCodeRepository.save(new AuthCode(request, VerifyCodeType.SIGNUP));
+        authCodeRepository.deleteByEmail(request.getEmail());
+        AuthCode emailVerifyCode = authCodeRepository.save(new AuthCode(request, VerifyCodeType.SIGNUP));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(emailVerifyCode.getEmail());
         mailMessage.setSubject("Dawa 이메일 확인 코드 입니다.");
@@ -38,12 +38,15 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
 
     @Transactional
     public void emailVerify(EmailVerifyCodeRequest request) {
-        AuthCode code = emailVerifyCodeRepository.findByEmail(request.getEmail());
+        AuthCode code = authCodeRepository.findByEmail(request.getEmail());
         if (code == null) {
             throw new RuntimeException("인증 코드가 존재하지 않습니다.");
         }
+        if (code.getType() == VerifyCodeType.PASSWORD_RESET) {
+            throw new HttpException(HttpStatus.BAD_REQUEST, "회원가입 인증 코드가 아닙니다.");
+        }
         if (code.isAuthCodeExpired()) {
-            emailVerifyCodeRepository.deleteByEmail(request.getEmail());
+            authCodeRepository.deleteByEmail(request.getEmail());
             throw new RuntimeException("인증 코드가 만료되었습니다.");
         }
         if (!code.getCode().equals(request.getCode())) {
@@ -54,6 +57,6 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
                 .emailVerifyStatus(true)
                 .build();
         userRepository.save(user);
-        emailVerifyCodeRepository.deleteByEmail(request.getEmail());
+        authCodeRepository.deleteByEmail(request.getEmail());
     }
 }
