@@ -37,7 +37,7 @@ public class User {
 
     private String schoolNumber;
 
-    private String department;
+    private String healthIssues;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

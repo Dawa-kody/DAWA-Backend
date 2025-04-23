@@ -16,8 +16,7 @@ public class AuthController {
     private final EmailVerifyService emailVerifyService;
     private final ReissueTokenService reissueTokenService;
     private final SigninService signinService;
-    private final SignupStudentService signupStudentService;
-    private final SignupTeacherService signupTeacherService;
+    private final SignupService signupStudentService;
     private final JwtProvider jwtProvider;
     private final PasswordChangeService passwordChangeService;
 
@@ -25,14 +24,17 @@ public class AuthController {
     public void sendPasswordChangeMail(@RequestBody @Valid EmailCodeRequest request) {
         passwordChangeService.sendMail(request);
     }
+
     @PostMapping("/password/change/email/verify")
     public void verifyPasswordChangeCode(@RequestBody @Valid PasswordChangeRequest request) {
         passwordChangeService.passwordChange(request);
     }
+
     @PostMapping("/email/send")
     public void sendSignupMail(@RequestBody @Valid EmailCodeRequest request) {
         emailVerifyService.sendSignupMail(request);
     }
+
     @PostMapping("/email/verify")
     public void verifyEmailCode(@RequestBody @Valid EmailVerifyCodeRequest request) {
         emailVerifyService.emailVerify(request);
@@ -43,17 +45,14 @@ public class AuthController {
         String refreshToken = jwtProvider.resolveToken(refreshHeader);
         return reissueTokenService.execute(refreshToken);
     }
+
     @PostMapping("/signin")
     public SignInResponse signIn(@RequestBody @Valid SigninRequest request) {
         return signinService.execute(request);
     }
 
-    @PostMapping("/signup/teacher")
-    public void signupTeacher(@RequestBody @Valid SignupTeacherRequest request) {
-        signupTeacherService.signupTeacher(request);
-    }
     @PostMapping("/signup/student")
-    public void signupStudent(@RequestBody @Valid SignupStudentRequest request) {
+    public void signupStudent(@RequestBody @Valid SignupRequest request) {
         signupStudentService.signupStudent(request);
     }
 }
