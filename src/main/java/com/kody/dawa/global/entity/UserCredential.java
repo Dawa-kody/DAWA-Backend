@@ -1,5 +1,6 @@
 package com.kody.dawa.global.entity;
 
+import com.kody.dawa.domain.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
