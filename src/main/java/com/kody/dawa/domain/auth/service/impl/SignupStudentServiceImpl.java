@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.auth.service.impl;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupStudentRequest;
+import com.kody.dawa.domain.auth.service.SignupStudentService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.exception.HttpException;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SignupStudentServiceImpl {
+public class SignupStudentServiceImpl implements SignupStudentService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Transactional

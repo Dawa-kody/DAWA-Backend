@@ -31,7 +31,7 @@ public class EmailVerifyCode {
     private LocalDateTime authCodeExpiresAt;
 
     public EmailVerifyCode(EmailCodeRequest emailCodeRequest) {
-        this.email = getEmail();
+        this.email = emailCodeRequest.getEmail();
         this.code = generateCode();
         this.authCodeExpiresAt = LocalDateTime.now().plusMinutes(3);
     }
