@@ -1,10 +1,10 @@
 package com.kody.dawa.domain.auth.service.impl;
 
-import com.kody.dawa.domain.auth.entity.EmailVerifyCode;
+import com.kody.dawa.domain.auth.entity.AuthCode;
+import com.kody.dawa.domain.auth.entity.enums.VerifyCodeType;
 import com.kody.dawa.domain.auth.presentation.dto.request.EmailCodeRequest;
 import com.kody.dawa.domain.auth.presentation.dto.request.EmailVerifyCodeRequest;
-import com.kody.dawa.domain.auth.presentation.dto.request.SignupStudentRequest;
-import com.kody.dawa.domain.auth.repository.EmailVerifyCodeRepository;
+import com.kody.dawa.domain.auth.repository.AuthCodeRepository;
 import com.kody.dawa.domain.auth.service.EmailVerifyService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
@@ -21,14 +21,14 @@ import org.springframework.stereotype.Service;
 public class EmailVerifyServiceImpl implements EmailVerifyService {
     private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
-    private final EmailVerifyCodeRepository emailVerifyCodeRepository;
+    private final AuthCodeRepository emailVerifyCodeRepository;
 
     @Transactional
     public void sendSignupMail(EmailCodeRequest request) {
         if(userRepository.existsUserByEmail(request.getEmail()))
             throw new HttpException(HttpStatus.BAD_REQUEST, "이미 해당 메일을 사용하는 유저가 존재합니다.");
         emailVerifyCodeRepository.deleteByEmail(request.getEmail());
-        EmailVerifyCode emailVerifyCode = emailVerifyCodeRepository.save(new EmailVerifyCode(request));
+        AuthCode emailVerifyCode = emailVerifyCodeRepository.save(new AuthCode(request, VerifyCodeType.SIGNUP));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(emailVerifyCode.getEmail());
         mailMessage.setSubject("Dawa 이메일 확인 코드 입니다.");
@@ -38,7 +38,7 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
 
     @Transactional
     public void emailVerify(EmailVerifyCodeRequest request) {
-        EmailVerifyCode code = emailVerifyCodeRepository.findByEmail(request.getEmail());
+        AuthCode code = emailVerifyCodeRepository.findByEmail(request.getEmail());
         if (code == null) {
             throw new RuntimeException("인증 코드가 존재하지 않습니다.");
         }

@@ -1,10 +1,8 @@
 package com.kody.dawa.domain.auth.entity;
 
+import com.kody.dawa.domain.auth.entity.enums.VerifyCodeType;
 import com.kody.dawa.domain.auth.presentation.dto.request.EmailCodeRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,18 +17,23 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordChangeCode {
+public class AuthCode {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private VerifyCodeType type;
+
     private String code;
 
     private LocalDateTime authCodeExpiresAt;
-    public PasswordChangeCode(EmailCodeRequest emailCodeRequest) {
+
+    public AuthCode(EmailCodeRequest emailCodeRequest, VerifyCodeType type) {
         this.email = emailCodeRequest.getEmail();
+        this.type = type;
         this.code = generateCode();
         this.authCodeExpiresAt = LocalDateTime.now().plusMinutes(3);
     }
