@@ -14,7 +14,7 @@ public class UserUpdateRequest {
     private String schoolNumber;
     @NotBlank
     private String name;
-    @NotBlank
+
     private Gender gender;
     @NotBlank
     private String email;
