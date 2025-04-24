@@ -10,7 +10,7 @@ import com.kody.dawa.domain.rental.repository.RentalRepository;
 import com.kody.dawa.domain.rental.service.RentalService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
-import com.kody.dawa.global.service.GetUser;
+import com.kody.dawa.domain.user.service.GetUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

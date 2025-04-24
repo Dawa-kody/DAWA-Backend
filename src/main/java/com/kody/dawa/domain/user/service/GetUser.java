@@ -1,4 +1,4 @@
-package com.kody.dawa.global.service;
+package com.kody.dawa.domain.user.service;
 
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;

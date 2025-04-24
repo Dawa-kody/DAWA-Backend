@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByNameOrSchoolNumber(String name, String schoolNumber);
     @Query("SELECT new com.kody.dawa.global.entity.UserCredential(u.id, u.email, u.password) FROM User u WHERE u.id = :userId")
     Optional<UserCredential> findCredentialById(Long userId);
+
+    @Query("SELECT u FROM User u ORDER BY u.schoolNumber ASC")
+    List<User> findAllUserBySchoolNumber();
 }

@@ -1,0 +1,65 @@
+package com.kody.dawa.domain.user.service;
+
+import com.kody.dawa.domain.user.entity.User;
+import com.kody.dawa.domain.user.enums.Role;
+import com.kody.dawa.domain.user.presentation.dto.request.UserRegisterRequest;
+import com.kody.dawa.domain.user.presentation.dto.response.UserResponse;
+import com.kody.dawa.domain.user.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final EntityManager entityManager;
+    private static final int BATCH_SIZE = 100;
+
+    @Transactional
+    public void registerUsers(List<UserRegisterRequest> requests) {
+
+        for (int i = 0; i < requests.size(); i++) {
+            UserRegisterRequest request = requests.get(i);
+
+            User user = User.builder()
+                    .email(request.getEmail())
+                    .gender(request.getGender())
+                    .name(request.getName())
+                    .schoolNumber(request.getSchoolNumber())
+                    .healthIssues(null)
+                    .password(null)
+                    .emailVerifyStatus(false)
+                    .roles(List.of(Role.ROLE_USER))
+                    .build();
+
+            entityManager.persist(user);
+
+            if ((i + 1) % BATCH_SIZE == 0) {
+                entityManager.flush();
+            }
+        }
+
+        entityManager.flush();
+    }
+
+    @Transactional
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAllUserBySchoolNumber();
+
+        return users.stream()
+                .map(user -> new UserResponse(
+                        user.getName(),
+                        user.getGender(),
+                        user.getSchoolNumber(),
+                        user.getHealthIssues()))
+                .collect(Collectors.toList());
+    }
+
+
+}
