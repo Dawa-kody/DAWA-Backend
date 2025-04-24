@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.rental.service.impl;
 
 import com.kody.dawa.domain.rental.entity.Rental;
+import com.kody.dawa.domain.rental.presentation.dto.request.RentalAcceptedRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.StudentRentalRequest;
 import com.kody.dawa.domain.rental.presentation.dto.response.AllRentalResponse;
@@ -55,14 +56,16 @@ public class RentalServiceImpl implements RentalService {
         rentalRepository.save(rental);
     }
 
-    public void rentalAccepted(Long id,  boolean accepted) {
+    public void rentalAccepted(Long id, RentalAcceptedRequest request) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
-
-        if (accepted) {
+        User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
+                .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+        if (request.isAccepted()) {
             rental.setIsAccepted(true);
             rentalRepository.save(rental);
         } else {
+
             rentalRepository.delete(rental);
         }
     }
