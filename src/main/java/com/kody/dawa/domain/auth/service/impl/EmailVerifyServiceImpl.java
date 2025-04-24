@@ -25,8 +25,12 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
 
     @Transactional
     public void sendSignupMail(EmailCodeRequest request) {
-        if(userRepository.existsUserByEmail(request.getEmail()))
-            throw new HttpException(HttpStatus.BAD_REQUEST, "이미 해당 메일을 사용하는 유저가 존재합니다.");
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
+
+        if(user.isEmailVerifyStatus()) {
+            throw new HttpException(HttpStatus.BAD_REQUEST, "이미 회원가입한 유저 입니다");
+        }
         authCodeRepository.deleteByEmail(request.getEmail());
         AuthCode emailVerifyCode = authCodeRepository.save(new AuthCode(request, VerifyCodeType.SIGNUP));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -39,6 +43,8 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
     @Transactional
     public void emailVerify(EmailVerifyCodeRequest request) {
         AuthCode code = authCodeRepository.findByEmail(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
         if (code == null) {
             throw new RuntimeException("인증 코드가 존재하지 않습니다.");
         }
@@ -52,10 +58,7 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
         if (!code.getCode().equals(request.getCode())) {
             throw new RuntimeException("잘못된 인증 코드입니다.");
         }
-        User user = User.builder()
-                .email(request.getEmail())
-                .emailVerifyStatus(true)
-                .build();
+        user.setEmailVerifyStatus(true);
         userRepository.save(user);
         authCodeRepository.deleteByEmail(request.getEmail());
     }

@@ -28,6 +28,7 @@ public class SigninServiceImpl implements SigninService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new HttpException(HttpStatus.UNAUTHORIZED, "비밀번호가 틀렸습니다.");
 
+
         JwtDetails accessToken = jwtProvider.generateToken(user.getId(), JwtType.ACCESS_TOKEN);
         JwtDetails refreshToken = jwtProvider.generateToken(user.getId(), JwtType.REFRESH_TOKEN);
 

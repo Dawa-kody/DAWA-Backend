@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.kody.dawa.domain.user.enums.Role;
 import java.util.List;
 
 @Service
@@ -24,11 +23,10 @@ public class SignupServiceImpl implements SignupService {
                 .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
 
         if(!user.isEmailVerifyStatus()) {
-            throw new HttpException(HttpStatus.BAD_REQUEST, "인증되지 않은 유저입니다");
+            throw new HttpException(HttpStatus.BAD_REQUEST, "인증되지 않은 유저입니다.");
         }
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(List.of(Role.ROLE_USER));
         user.setHealthIssues(request.getHealthIssues());
         userRepository.save(user);
     }
