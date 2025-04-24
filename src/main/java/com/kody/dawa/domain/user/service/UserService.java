@@ -54,6 +54,7 @@ public class UserService {
 
         return users.stream()
                 .map(user -> new UserResponse(
+                        user.getId(),
                         user.getName(),
                         user.getGender(),
                         user.getSchoolNumber(),
@@ -61,5 +62,22 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateUser(Long id, UserRegisterRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("이 유저를 찾을 수 없습니다"));
 
+        user.setEmail(request.getEmail());
+        user.setGender(request.getGender());
+        user.setName(request.getName());
+        user.setSchoolNumber(request.getSchoolNumber());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("이 유저를 찾을 수 없습니다"));
+        userRepository.delete(user);
+    }
 }
