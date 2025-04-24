@@ -23,19 +23,13 @@ public class SignupServiceImpl implements SignupService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
 
-        if (user.getPassword() != null || user.getName() != null) {
-            throw new HttpException(HttpStatus.BAD_REQUEST, "이미 회원가입을 완료한 유저입니다.");
-        }
-
         if(!user.isEmailVerifyStatus()) {
             throw new HttpException(HttpStatus.BAD_REQUEST, "인증되지 않은 유저입니다");
         }
 
-        user.setName(request.getName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setSchoolNumber(request.getSchoolNumber());
         user.setRoles(List.of(Role.ROLE_USER));
-        user.setGender(request.getGender());
+        user.setHealthIssues(request.getHealthIssues());
         userRepository.save(user);
     }
 }

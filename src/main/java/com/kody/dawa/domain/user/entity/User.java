@@ -7,7 +7,6 @@ import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.user.enums.Gender;
 import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.util.StringListConverter;
-import com.kody.dawa.domain.visit.entity.VisitRecord;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,10 +46,6 @@ public class User {
 
     @Convert(converter = StringListConverter.class)
     private List<Role> roles;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<VisitRecord> visits = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore

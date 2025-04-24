@@ -51,7 +51,7 @@ public class AuthController {
         return signinService.execute(request);
     }
 
-    @PostMapping("/signup/student")
+    @PostMapping("/signup")
     public void signup(@RequestBody @Valid SignupRequest request) {
         signupStudentService.signup(request);
     }
