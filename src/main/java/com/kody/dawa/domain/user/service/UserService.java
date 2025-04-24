@@ -3,6 +3,7 @@ package com.kody.dawa.domain.user.service;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.presentation.dto.request.UserRegisterRequest;
+import com.kody.dawa.domain.user.presentation.dto.request.UserUpdateRequest;
 import com.kody.dawa.domain.user.presentation.dto.response.UserResponse;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -63,7 +64,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long id, UserRegisterRequest request) {
+    public void updateUser(Long id, UserUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("이 유저를 찾을 수 없습니다"));
 
