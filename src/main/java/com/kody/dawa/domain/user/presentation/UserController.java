@@ -24,12 +24,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body("사용자 등록 성공");
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserResponse>> getUsers() {
-        List<UserResponse> users = userService.getAllUsers();
-        return users.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(users);
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(required = false) List<String> classes) {
+        List<UserResponse> users = userService.getAllUsers(classes);
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")

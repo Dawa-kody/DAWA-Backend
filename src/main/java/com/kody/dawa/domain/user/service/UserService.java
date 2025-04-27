@@ -50,8 +50,8 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAllUserBySchoolNumber();
+    public List<UserResponse> getAllUsers(List<String> classes) {
+        List<User> users = userRepository.findAllUserBySchoolNumber(classes);
 
         return users.stream()
                 .map(user -> new UserResponse(
