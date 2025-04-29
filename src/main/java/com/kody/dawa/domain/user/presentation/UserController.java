@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok("사용자 수정 성공");
     }
 
-    @GetMapping("/healthissues/{schoolNumber}")
+    @PostMapping("/healthissues/{schoolNumber}")
     public ResponseEntity<UserHealthIssueDetailResponse> getUserHealthIssues(@PathVariable String schoolNumber) {
         UserHealthIssueDetailResponse response = userService.getHealthIssueDetail(schoolNumber);
         return ResponseEntity.ok(response);
