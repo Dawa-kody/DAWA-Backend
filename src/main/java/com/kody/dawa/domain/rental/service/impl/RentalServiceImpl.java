@@ -66,26 +66,20 @@ public class RentalServiceImpl implements RentalService {
                 .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
         User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
                 .orElseThrow(() -> new RuntimeException("없는 유저입니다."));
+        Mail mail = Mail.builder()
+                .content(request.getContent())
+                .count(rental.getCount())
+                .item(rental.getRental())
+                .build();
+        mailRepository.save(mail);
+        mailService.send(user.getSchoolNumber(), mail);
         if (request.isAccepted()) {
             rental.setIsAccepted(true);
             rentalRepository.save(rental);
-            Mail mail = Mail.builder()
-                    .content(request.getContent())
-                    .count((rental.getCount()))
-                    .item(rental.getRental())
-                    .build();
-            mailRepository.save(mail);
-            mailService.send(user.getSchoolNumber(), mail);
         } else {
-            Mail mail = Mail.builder()
-                    .content(request.getContent())
-                    .count((rental.getCount()))
-                    .item(rental.getRental())
-                    .build();
-            mailRepository.save(mail);
-            mailService.send(user.getSchoolNumber(), mail);
             rentalRepository.delete(rental);
         }
+
     }
 
     public void rentalCancel(Long id) {
