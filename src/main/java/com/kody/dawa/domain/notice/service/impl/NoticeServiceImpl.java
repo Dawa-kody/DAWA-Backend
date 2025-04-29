@@ -33,6 +33,7 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticesResponse> getAllNotices() {
         return noticeRepository.findAllByOrderByCreateAtDesc().stream()
                 .map(notices -> new NoticesResponse(
+                        notices.getId(),
                         notices.getTitle(),
                         notices.getContent(),
                         notices.getYearMonthDay()))
