@@ -1,6 +1,7 @@
 package com.kody.dawa.domain.mail.service.impl;
 
 import com.kody.dawa.domain.mail.entity.Mail;
+import com.kody.dawa.domain.mail.presentation.dto.response.MailResponse;
 import com.kody.dawa.domain.mail.service.MailService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.service.GetUser;
@@ -35,9 +36,15 @@ public class MailServiceImpl implements MailService {
         SseEmitter emitter = emitters.get(schoolNumber);
         if (emitter != null) {
             try {
+                MailResponse response = new MailResponse(
+                        mail.getContent(),
+                        mail.getItem(),
+                        mail.getCount(),
+                        mail.getYearMonthDay()
+                );
                 emitter.send(SseEmitter.event()
                         .name("mail")
-                        .data(mail));
+                        .data(response));
             } catch (IOException e) {
                 emitters.remove(schoolNumber);
             }
