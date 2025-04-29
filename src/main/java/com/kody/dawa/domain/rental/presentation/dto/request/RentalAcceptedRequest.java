@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentalAcceptedRequest {
-    @NotBlank
     private boolean accepted;
-
+    @NotBlank
     private String content;
     @NotBlank
     private String schoolNumber;

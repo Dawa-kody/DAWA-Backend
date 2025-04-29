@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.rental.service.impl;
 
+import com.kody.dawa.domain.mail.entity.Mail;
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalAcceptedRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
@@ -64,6 +65,11 @@ public class RentalServiceImpl implements RentalService {
         if (request.isAccepted()) {
             rental.setIsAccepted(true);
             rentalRepository.save(rental);
+            Mail mail = Mail.builder()
+                    .content(request.getContent())
+                    .count((rental.getCount()))
+                    .item(rental.getRental())
+                    .build();
         } else {
 
             rentalRepository.delete(rental);
