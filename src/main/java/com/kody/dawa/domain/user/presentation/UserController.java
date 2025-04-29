@@ -25,8 +25,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponse>> getUsers(@RequestParam(required = false) List<String> classes) {
-        List<UserResponse> users = userService.getAllUsers(classes);
+    public ResponseEntity<List<UserResponse>> getUsers(
+            @RequestParam(required = false) List<String> classes,
+            @RequestParam(required = false) String name
+    ) {
+        List<UserResponse> users = userService.getAllUsers(classes, name);
         return ResponseEntity.ok(users);
     }
 

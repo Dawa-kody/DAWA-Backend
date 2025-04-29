@@ -23,6 +23,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new com.kody.dawa.global.entity.UserCredential(u.id, u.email, u.password) FROM User u WHERE u.id = :userId")
     Optional<UserCredential> findCredentialById(Long userId);
 
-    @Query("SELECT u FROM User u WHERE (:classes IS NULL OR SUBSTRING(u.schoolNumber, 1, 2) IN :classes) ORDER BY u.schoolNumber ASC")
-    List<User> findAllUserBySchoolNumber(@Param("classes") List<String> classes);
+    @Query("""
+    SELECT u FROM User u
+    WHERE 
+        (:classes IS NULL OR SUBSTRING(u.schoolNumber, 1, 2) IN :classes)
+        AND (
+            :keyword IS NULL OR u.name LIKE %:keyword% OR u.schoolNumber LIKE %:keyword%
+        )
+    ORDER BY u.schoolNumber ASC
+""")
+    List<User> findAllUserBySchoolNumberOrName(
+            @Param("classes") List<String> classes,
+            @Param("keyword") String keyword
+    );
+
 }
