@@ -2,6 +2,7 @@ package com.kody.dawa.domain.mail.service.impl;
 
 import com.kody.dawa.domain.mail.entity.Mail;
 import com.kody.dawa.domain.mail.presentation.dto.response.MailResponse;
+import com.kody.dawa.domain.mail.repository.MailRepository;
 import com.kody.dawa.domain.mail.service.MailService;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.service.GetUser;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MailServiceImpl implements MailService {
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final GetUser getUser;
+    private final MailRepository mailRepository;
 
     public SseEmitter subscribe() {
         User user = getUser.getCurrentUser();
@@ -49,5 +52,18 @@ public class MailServiceImpl implements MailService {
                 emitters.remove(schoolNumber);
             }
         }
+    }
+
+    public List<MailResponse> getUserMails() {
+        User user = getUser.getCurrentUser();
+        List<Mail> mails = mailRepository.findAllByUserOrderByCreateAtDesc(user);
+        return mails.stream()
+                .map(mail -> new MailResponse(
+                        mail.getContent(),
+                        mail.getItem(),
+                        mail.getCount(),
+                        mail.getYearMonthDay()
+                ))
+                .toList();
     }
 }
