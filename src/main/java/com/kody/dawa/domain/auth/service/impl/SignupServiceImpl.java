@@ -26,6 +26,10 @@ public class SignupServiceImpl implements SignupService {
             throw new HttpException(HttpStatus.BAD_REQUEST, "인증되지 않은 유저입니다.");
         }
 
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            throw new HttpException(HttpStatus.CONFLICT, "이미 회원가입된 유저입니다.");
+        }
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setHealthIssues(request.getHealthIssues());
         userRepository.save(user);

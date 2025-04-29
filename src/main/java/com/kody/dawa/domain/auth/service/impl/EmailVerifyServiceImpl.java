@@ -29,9 +29,10 @@ public class EmailVerifyServiceImpl implements EmailVerifyService {
                 .orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "없는 유저 입니다."));
 
         if(user.isEmailVerifyStatus()) {
-            throw new HttpException(HttpStatus.BAD_REQUEST, "이미 회원가입한 유저 입니다");
+            throw new HttpException(HttpStatus.BAD_REQUEST, "인증된 유저 입니다");
         }
         authCodeRepository.deleteByEmail(request.getEmail());
+
         AuthCode emailVerifyCode = authCodeRepository.save(new AuthCode(request, VerifyCodeType.SIGNUP));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(emailVerifyCode.getEmail());
