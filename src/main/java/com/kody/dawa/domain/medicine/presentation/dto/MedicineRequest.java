@@ -12,7 +12,5 @@ public class MedicineRequest {
     @NotNull
     private String medicineName;
     @NotNull
-    private String medicineType;
-    @NotNull
     private Long medicineCount;
 }

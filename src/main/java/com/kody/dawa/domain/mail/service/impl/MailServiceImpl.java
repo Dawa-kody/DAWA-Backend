@@ -43,7 +43,7 @@ public class MailServiceImpl implements MailService {
                         mail.getContent(),
                         mail.getItem(),
                         mail.getCount(),
-                        mail.getYearMonthDay()
+                        mail.getCreateAt()
                 );
                 emitter.send(SseEmitter.event()
                         .name("mail")
@@ -62,7 +62,7 @@ public class MailServiceImpl implements MailService {
                         mail.getContent(),
                         mail.getItem(),
                         mail.getCount(),
-                        mail.getYearMonthDay()
+                        mail.getCreateAt()
                 ))
                 .toList();
     }

@@ -14,7 +14,5 @@ public class MedicineUpdateRequest {
     @NotNull
     private String medicineName;
     @NotNull
-    private String medicineType;
-    @NotNull
     private Long medicineCount;
 }

@@ -22,7 +22,6 @@ public class MedicineServiceImpl implements MedicineService {
         }
         Medicine medicine = Medicine.builder()
                 .name(request.getMedicineName())
-                .type(request.getMedicineType())
                 .count(request.getMedicineCount())
                 .build();
         return medicineRepository.save(medicine);
@@ -33,7 +32,6 @@ public class MedicineServiceImpl implements MedicineService {
                 .orElseThrow(() -> new RuntimeException("없는 약입니다"));
 
         medicine.setCount(request.getMedicineCount());
-        medicine.setType(request.getMedicineType());
         medicine.setName(request.getMedicineName());
 
         medicineRepository.save(medicine);

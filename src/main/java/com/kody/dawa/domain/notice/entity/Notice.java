@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.notice.entity;
 
+import com.kody.dawa.global.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,10 +11,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Notice {
+public class Notice extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
 
+    private String content;
 }
