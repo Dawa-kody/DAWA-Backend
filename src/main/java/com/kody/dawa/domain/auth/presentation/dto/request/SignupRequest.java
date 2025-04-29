@@ -1,5 +1,6 @@
 package com.kody.dawa.domain.auth.presentation.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kody.dawa.domain.user.entity.HealthIssueDetail;
 import com.kody.dawa.domain.user.enums.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,5 +22,5 @@ public class SignupRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private String healthIssues;
+    private HealthIssueDetail healthIssues;
 }

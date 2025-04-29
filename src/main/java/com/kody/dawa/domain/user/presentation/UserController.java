@@ -2,6 +2,7 @@ package com.kody.dawa.domain.user.presentation;
 
 import com.kody.dawa.domain.user.presentation.dto.request.UserRegisterRequest;
 import com.kody.dawa.domain.user.presentation.dto.request.UserUpdateRequest;
+import com.kody.dawa.domain.user.presentation.dto.response.UserHealthIssueDetailResponse;
 import com.kody.dawa.domain.user.presentation.dto.response.UserResponse;
 import com.kody.dawa.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -41,7 +42,11 @@ public class UserController {
         return ResponseEntity.ok("사용자 수정 성공");
     }
 
-
+    @GetMapping("/healthissues/{id}")
+    public ResponseEntity<UserHealthIssueDetailResponse> getUserHealthIssues(@PathVariable Long id) {
+        UserHealthIssueDetailResponse response = userService.getHealthIssueDetail(id);
+        return ResponseEntity.ok(response);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

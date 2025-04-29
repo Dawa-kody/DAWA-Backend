@@ -10,5 +10,4 @@ public class UserResponse {
     private String name;
     private Gender gender;
     private String schoolNumber;
-    private String healthIssues;
 }

@@ -37,10 +37,11 @@ public class User {
 
     private String schoolNumber;
 
-    private String healthIssues;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    @Embedded
+    private HealthIssueDetail healthIssueDetail;
 
     @Column(name = "email_verify_status", columnDefinition = "TINYINT(1)")
     private boolean emailVerifyStatus;

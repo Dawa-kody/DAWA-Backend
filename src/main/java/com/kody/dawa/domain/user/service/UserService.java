@@ -1,9 +1,11 @@
 package com.kody.dawa.domain.user.service;
 
+import com.kody.dawa.domain.user.entity.HealthIssueDetail;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.domain.user.presentation.dto.request.UserRegisterRequest;
 import com.kody.dawa.domain.user.presentation.dto.request.UserUpdateRequest;
+import com.kody.dawa.domain.user.presentation.dto.response.UserHealthIssueDetailResponse;
 import com.kody.dawa.domain.user.presentation.dto.response.UserResponse;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -33,7 +35,6 @@ public class UserService {
                     .gender(request.getGender())
                     .name(request.getName())
                     .schoolNumber(request.getSchoolNumber())
-                    .healthIssues(null)
                     .password(null)
                     .emailVerifyStatus(false)
                     .roles(List.of(Role.ROLE_USER))
@@ -58,9 +59,23 @@ public class UserService {
                         user.getId(),
                         user.getName(),
                         user.getGender(),
-                        user.getSchoolNumber(),
-                        user.getHealthIssues()))
+                        user.getSchoolNumber()))
                 .collect(Collectors.toList());
+    }
+
+
+    public UserHealthIssueDetailResponse getHealthIssueDetail(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. ID: " + id));
+
+        HealthIssueDetail detail = user.getHealthIssueDetail();
+
+        return new UserHealthIssueDetailResponse(
+                detail != null ? detail.getAllergyImmune() : null,
+                detail != null ? detail.getChronicMedication() : null,
+                detail != null ? detail.getEmergencyPossible() : null,
+                detail != null ? detail.getEtc() : null
+        );
     }
 
     @Transactional

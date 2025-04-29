@@ -2,6 +2,7 @@ package com.kody.dawa.domain.auth.service.impl;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.SignupRequest;
 import com.kody.dawa.domain.auth.service.SignupService;
+import com.kody.dawa.domain.user.entity.HealthIssueDetail;
 import com.kody.dawa.domain.user.entity.User;
 import com.kody.dawa.domain.user.repository.UserRepository;
 import com.kody.dawa.global.exception.HttpException;
@@ -31,7 +32,14 @@ public class SignupServiceImpl implements SignupService {
         }
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setHealthIssues(request.getHealthIssues());
+        HealthIssueDetail healthIssueDetail = new HealthIssueDetail();
+        if (request.getHealthIssues() != null) {
+            healthIssueDetail.setAllergyImmune(request.getHealthIssues().getAllergyImmune());
+            healthIssueDetail.setChronicMedication(request.getHealthIssues().getChronicMedication());
+            healthIssueDetail.setEmergencyPossible(request.getHealthIssues().getEmergencyPossible());
+            healthIssueDetail.setEtc(request.getHealthIssues().getEtc());
+        }
+        user.setHealthIssueDetail(healthIssueDetail);
         userRepository.save(user);
     }
 }
