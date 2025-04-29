@@ -11,6 +11,5 @@ import java.util.Optional;
 @Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     Optional<Medicine> findByName(String name);
-    List<Medicine> findByTypeOrderByTimeDesc(String type);
     List<Medicine> findByOrderByTimeDesc();
 }

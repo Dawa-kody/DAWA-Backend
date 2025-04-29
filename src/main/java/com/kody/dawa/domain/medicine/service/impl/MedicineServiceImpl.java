@@ -46,10 +46,7 @@ public class MedicineServiceImpl implements MedicineService {
         medicineRepository.delete(medicine);
     }
 
-    public List<Medicine> getAllMedicine(String medicineType) {
-        if (medicineType == null || medicineType.isBlank()) {
+    public List<Medicine> getAllMedicine() {
             return medicineRepository.findByOrderByTimeDesc();
-        }
-        return medicineRepository.findByTypeOrderByTimeDesc(medicineType);
     }
 }

@@ -10,5 +10,5 @@ public interface MedicineService {
     Medicine createMedicine(MedicineRequest request);
     Medicine updateMedicine(MedicineUpdateRequest request);
     void deleteMedicine(Long id);
-    List<Medicine> getAllMedicine(String medicineType);
+    List<Medicine> getAllMedicine();
 }

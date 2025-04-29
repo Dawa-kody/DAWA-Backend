@@ -47,9 +47,9 @@ public class MedicineController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?> get (@RequestParam(required = false) String medicineType) {
+    public ResponseEntity<?> get () {
         try{
-            return ResponseEntity.ok(medicineService.getAllMedicine(medicineType));
+            return ResponseEntity.ok(medicineService.getAllMedicine());
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
