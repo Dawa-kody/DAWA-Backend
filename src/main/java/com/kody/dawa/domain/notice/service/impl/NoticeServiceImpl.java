@@ -35,7 +35,6 @@ public class NoticeServiceImpl implements NoticeService {
                 .map(notices -> new NoticesResponse(
                         notices.getId(),
                         notices.getTitle(),
-                        notices.getContent(),
                         notices.getYearMonthDay()))
                 .collect(Collectors.toList());
     }
