@@ -43,7 +43,7 @@ public class RentalController {
         return rentalService.getAllRentals();
     }
 
-    @GetMapping("/rentalAccept/{id}")
+    @GetMapping("/rentalAccept")
     public List<RentalAcceptResponse> getRentalAccept() {
         return rentalService.getRentalAccept();
     }

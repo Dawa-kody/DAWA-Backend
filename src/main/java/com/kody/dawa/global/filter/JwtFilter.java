@@ -23,7 +23,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
 
         if(token != null){
-            token = resolveToken(token);
             Authentication authentication = jwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -31,11 +30,4 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String resolveToken(String authorization){
-        if(authorization != null && authorization.startsWith("Bearer ")){
-            authorization = authorization.substring(7);
-        } else authorization = null;
-
-        return authorization;
-    }
 }
