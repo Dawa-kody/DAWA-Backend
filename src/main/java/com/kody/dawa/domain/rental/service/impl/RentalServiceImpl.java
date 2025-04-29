@@ -1,6 +1,8 @@
 package com.kody.dawa.domain.rental.service.impl;
 
 import com.kody.dawa.domain.mail.entity.Mail;
+import com.kody.dawa.domain.mail.repository.MailRepository;
+import com.kody.dawa.domain.mail.service.MailService;
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalAcceptedRequest;
 import com.kody.dawa.domain.rental.presentation.dto.request.RentalRequest;
@@ -25,6 +27,8 @@ public class RentalServiceImpl implements RentalService {
     private final RentalRepository rentalRepository;
     private final UserRepository userRepository;
     private final GetUser getUser;
+    private final MailRepository mailRepository;
+    private final MailService mailService;
     public void createRental(RentalRequest request) {
         User user = userRepository.findBySchoolNumber(request.getSchoolNumber())
                 .orElseThrow(() -> new RuntimeException("잘못된 학번 입니다."));
@@ -70,8 +74,16 @@ public class RentalServiceImpl implements RentalService {
                     .count((rental.getCount()))
                     .item(rental.getRental())
                     .build();
+            mailRepository.save(mail);
+            mailService.send(user.getSchoolNumber(), mail);
         } else {
-
+            Mail mail = Mail.builder()
+                    .content(request.getContent())
+                    .count((rental.getCount()))
+                    .item(rental.getRental())
+                    .build();
+            mailRepository.save(mail);
+            mailService.send(user.getSchoolNumber(), mail);
             rentalRepository.delete(rental);
         }
     }
