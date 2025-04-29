@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoticesResponse {
+    private Long id;
     private String title;
     private String content;
     private String yearMonthDay;
