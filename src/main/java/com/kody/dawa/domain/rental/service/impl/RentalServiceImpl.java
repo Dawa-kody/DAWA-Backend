@@ -70,6 +70,7 @@ public class RentalServiceImpl implements RentalService {
                 .content(request.getContent())
                 .count(rental.getCount())
                 .item(rental.getRental())
+                .user(user)
                 .build();
         mailRepository.save(mail);
         mailService.send(user.getSchoolNumber(), mail);
