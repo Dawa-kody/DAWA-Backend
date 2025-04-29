@@ -2,6 +2,7 @@ package com.kody.dawa.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kody.dawa.domain.mail.entity.Mail;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import com.kody.dawa.domain.rental.entity.Rental;
 import com.kody.dawa.domain.user.enums.Gender;
@@ -54,4 +55,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Rental> rentals = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Mail> mails = new HashSet<>();
 }
