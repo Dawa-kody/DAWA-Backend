@@ -112,7 +112,6 @@ public class ExcelController {
         }
     }
 
-    private static final String TARGET_COLOR_HEX = "FFFFC000";
 
     @PostMapping("/change")
     public ResponseEntity<?> change(@RequestParam("file") MultipartFile file) throws IOException {
@@ -121,66 +120,13 @@ public class ExcelController {
         try (InputStream inputStream = file.getInputStream();
              Workbook workbook = new XSSFWorkbook(inputStream)) {
 
-            Sheet sheet = workbook.getSheetAt(0);
-
-            for (Row row : sheet) {
-                for (Cell cell : row) {
-                    CellStyle style = cell.getCellStyle();
-                    String cellValue = getCellValueAsString(cell);
-
-                    if (style instanceof XSSFCellStyle xssfCellStyle) {
-                        if (xssfCellStyle.getFillPattern() == FillPatternType.SOLID_FOREGROUND) {
-                            XSSFColor color = xssfCellStyle.getFillForegroundColorColor();
-                            if (color != null && color.getARGBHex() != null) {
-                                String argbHex = color.getARGBHex(); // 예: "FFFFC000"
-                                logger.info("셀 값: " + cellValue + " | 색상: " + argbHex);
-
-                                // 색상 일치 확인
-                                if (TARGET_COLOR_HEX.equalsIgnoreCase(argbHex)) {
-                                    Map<String, String> map = new HashMap<>();
-                                    map.put(cellValue, "여성");
-                                    result.add(map);
-                                }
-                                else if (!cellValue.isBlank() && !cellValue.equals("전출")){
-                                    Map<String, String> map = new HashMap<>();
-                                    map.put(cellValue, "남성");
-                                    result.add(map);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(excelService.change(workbook,result));
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    private boolean isMatchingColor(CellStyle style, String targetHex) {
-        if (style instanceof XSSFCellStyle xssfCellStyle) {
-            if (xssfCellStyle.getFillPattern() == FillPatternType.SOLID_FOREGROUND) {
-                XSSFColor color = xssfCellStyle.getFillForegroundColorColor();
-                if (color != null && color.getARGBHex() != null) {
-                    // 예: "FFFFF2CC" → 끝 6자리만 비교 (F2CC 등)
-                    String argb = color.getARGBHex(); // 예: "FFFFF2CC"
-                    return argb.toUpperCase().endsWith(targetHex.toUpperCase());
-                }
-            }
-        }
-        return false;
-    }
 
-
-    private String getCellValueAsString(Cell cell) {
-        return switch (cell.getCellType()) {
-            case STRING -> cell.getStringCellValue();
-            case NUMERIC -> String.valueOf(cell.getNumericCellValue());
-            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
-            case FORMULA -> cell.getCellFormula();
-            default -> "";
-        };
-    }
 
 }
