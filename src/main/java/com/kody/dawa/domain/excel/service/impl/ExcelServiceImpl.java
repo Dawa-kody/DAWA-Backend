@@ -4,19 +4,25 @@ import com.kody.dawa.domain.excel.repository.ExcelRepository;
 import com.kody.dawa.domain.excel.service.ExcelService;
 import com.kody.dawa.domain.questionnaire.entity.Questionnaire;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class ExcelServiceImpl implements ExcelService {
     private final ExcelRepository excelRepository;
+    private final Logger logger = LoggerFactory.getLogger(ExcelServiceImpl.class);
 
 //    public void createXssStudent(ExcelStudentRequest excelRequest, Sheet sheet){
 //        createHeader(sheet);
@@ -186,5 +192,58 @@ public class ExcelServiceImpl implements ExcelService {
         LocalDate now = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy");
         return now.format(dateTimeFormatter);
+    }
+
+    private static final String TARGET_COLOR_HEX = "FFFFC000";
+
+    public List<Map<String,String>> change(Workbook workbook, List<Map<String, String>> result){
+        Sheet sheet = workbook.getSheetAt(0);
+
+        int count = 0;
+        Set<Integer> targetColumns = Set.of(1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14);
+
+        for (int rowIndex = 4; rowIndex <= 22; rowIndex++) {  // Row index 5~22
+            Row row = sheet.getRow(rowIndex);
+            if (row == null) continue;
+
+            for (int colIndex : targetColumns) {
+                Cell cell = row.getCell(colIndex);
+                if (cell == null) continue;
+
+                String cellValue = getCellValueAsString(cell).trim();
+                if (cellValue.isBlank() || cellValue.equals("전출")) continue;
+
+                CellStyle style = cell.getCellStyle();
+                boolean isFemale = false;
+
+                if (style instanceof XSSFCellStyle xssfCellStyle) {
+                    if (xssfCellStyle.getFillPattern() == FillPatternType.SOLID_FOREGROUND) {
+                        XSSFColor color = xssfCellStyle.getFillForegroundColorColor();
+                        if (color != null && TARGET_COLOR_HEX.equalsIgnoreCase(color.getARGBHex())) {
+                            isFemale = true;
+                        }
+                    }
+                }
+
+                Map<String, String> map = new HashMap<>();
+                map.put(cellValue, isFemale ? "여성" : "남성");
+                logger.info("이름 : " +cellValue+" | 성별 : "+map.get(cellValue));
+                result.add(map);
+                count++;
+            }
+        }
+        logger.info(String.valueOf(count));
+        return result;
+    }
+
+
+    private String getCellValueAsString(Cell cell) {
+        return switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case NUMERIC -> String.valueOf(cell.getNumericCellValue());
+            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+            case FORMULA -> cell.getCellFormula();
+            default -> "";
+        };
     }
 }
