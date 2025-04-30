@@ -196,13 +196,18 @@ public class ExcelServiceImpl implements ExcelService {
 
     private static final String TARGET_COLOR_HEX = "FFFFC000";
 
-    public List<Map<String,String>> change(Workbook workbook, List<Map<String, String>> result){
+    public List<Map<String, String>> change(Workbook workbook, List<Map<String, String>> result) {
         Sheet sheet = workbook.getSheetAt(0);
 
-        int count = 0;
-        Set<Integer> targetColumns = Set.of(1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14);
+        Map<Integer, String> classMap = Map.ofEntries(
+                Map.entry(1, "11"), Map.entry(2, "12"), Map.entry(3, "13"), Map.entry(4, "14"),
+                Map.entry(6, "21"), Map.entry(7, "22"), Map.entry(8, "23"), Map.entry(9, "24"),
+                Map.entry(11, "31"), Map.entry(12, "32"), Map.entry(13, "33"), Map.entry(14, "34")
+        );
 
-        for (int rowIndex = 4; rowIndex <= 22; rowIndex++) {  // Row index 5~22
+        Set<Integer> targetColumns = classMap.keySet();
+        int count = 0;
+        for (int rowIndex = 4; rowIndex <= 22; rowIndex++) {
             Row row = sheet.getRow(rowIndex);
             if (row == null) continue;
 
@@ -225,9 +230,16 @@ public class ExcelServiceImpl implements ExcelService {
                     }
                 }
 
+                String classNum = classMap.get(colIndex); // 학년반 (예: 11, 21)
+                String studentNum = String.format("%02d", rowIndex - 3); // 번호 (예: 01)
+                String studentId = classNum + studentNum; // 예: 1101
+
                 Map<String, String> map = new HashMap<>();
-                map.put(cellValue, isFemale ? "여성" : "남성");
-                logger.info("이름 : " +cellValue+" | 성별 : "+map.get(cellValue));
+                map.put("studentId", studentId);
+                map.put("name", cellValue);
+                map.put("gender", isFemale ? "WOMAN" : "MAN");
+
+                logger.info("학번: " + studentId + " | 이름: " + cellValue + " | 성별: " + map.get("gender"));
                 result.add(map);
                 count++;
             }
@@ -235,7 +247,6 @@ public class ExcelServiceImpl implements ExcelService {
         logger.info(String.valueOf(count));
         return result;
     }
-
 
     private String getCellValueAsString(Cell cell) {
         return switch (cell.getCellType()) {
