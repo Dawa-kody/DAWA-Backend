@@ -226,7 +226,7 @@ public class ExcelServiceImpl implements ExcelService {
                 }
 
                 Map<String, String> map = new HashMap<>();
-                map.put(cellValue, isFemale ? "여성" : "남성");
+                map.put(cellValue, isFemale ? "WOMAN" : "MAN");
                 logger.info("이름 : " +cellValue+" | 성별 : "+map.get(cellValue));
                 result.add(map);
                 count++;
