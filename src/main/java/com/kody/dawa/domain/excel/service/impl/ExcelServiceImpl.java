@@ -134,7 +134,8 @@ public class ExcelServiceImpl implements ExcelService {
             row.createCell(i++).setCellValue(quantity1);
             row.createCell(i++).setCellValue(medication2);
             row.createCell(i++).setCellValue(quantity2);
-            row.createCell(i).setCellValue(questionnaire.getNotes());
+            row.createCell(i++).setCellValue(questionnaire.getNotes());
+            row.createCell(i).setCellValue(questionnaire.getYearMonthDay());
         }
     }
 
@@ -153,7 +154,8 @@ public class ExcelServiceImpl implements ExcelService {
         header.createCell(i++).setCellValue("수량1");
         header.createCell(i++).setCellValue("투약2");
         header.createCell(i++).setCellValue("수량2");
-        header.createCell(i).setCellValue("비고");
+        header.createCell(i++).setCellValue("비고");
+        header.createCell(i).setCellValue("날짜");
     }
 
     public void createDate(Workbook workbook, String date){
