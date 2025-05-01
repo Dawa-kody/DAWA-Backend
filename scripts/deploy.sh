@@ -1,5 +1,7 @@
 git pull origin main
 
+chmod +x ./gradlew
+
 ./gradlew clean build
 
 docker build . -t dawa/dawa-server:latest
