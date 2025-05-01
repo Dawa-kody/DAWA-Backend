@@ -37,3 +37,6 @@ main/resources/application.properties
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env

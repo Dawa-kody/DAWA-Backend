@@ -1,6 +1,6 @@
 package com.kody.dawa.global.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kody.dawa.global.Handler.CustomAccessDeniedHandler;
+import com.kody.dawa.global.handler.CustomAccessDeniedHandler;
 import com.kody.dawa.global.filter.JwtExceptionFilter;
 import com.kody.dawa.global.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.kody.dawa.global.Handler;
+package com.kody.dawa.global.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kody.dawa.global.exception.ExceptionResponse;
