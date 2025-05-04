@@ -22,16 +22,16 @@ spring:
         order_updates: true
 
   mail:
+    host: smtp.gmail.com
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}
+    port: 587
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-    host: smtp.gmail.com
-    username: ${EMAIL}
-    password: ${EMAIL_PASSWORD}
-    port: '587'
 
 cloud:
   aws:
