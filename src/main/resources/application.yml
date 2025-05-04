@@ -25,9 +25,9 @@ spring:
     properties:
       mail:
         smtp:
+          auth: true
           starttls:
-            enable: 'true'
-          auth: 'true'
+            enable: true
     host: smtp.gmail.com
     username: ${EMAIL}
     password: ${EMAIL_PASSWORD}
