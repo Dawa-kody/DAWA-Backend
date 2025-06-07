@@ -33,21 +33,6 @@ spring:
           starttls:
             enable: true
 
-  security:
-    oauth2:
-      client:
-        registration:
-          smartthings:
-            client-id: ${CLIENT_ID}
-            client-secret: ${CLIENT_SECRET}
-            authorization-grant-type: authorization_code
-            redirect-uri: ${BASEURL}/oauth/callback
-            scope: r:devices:* w:devices:* x:devices:*
-        provider:
-          smartthings:
-            authorization-uri: ${BASEURL}/oauth/authorize
-            token-uri: ${BASEURL}/oauth/refresh
-
 cloud:
   aws:
     credentials:
