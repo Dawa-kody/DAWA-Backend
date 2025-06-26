@@ -52,3 +52,9 @@ jwt:
   refreshTokenKey: ${JWT_REFRESH_TOKEN_KEY}
   refreshTokenExpires: 259200000
 
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true

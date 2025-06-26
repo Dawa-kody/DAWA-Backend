@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 @Getter
 @Builder
 @AllArgsConstructor
 public class SignInResponse {
     private final String accessToken;
-    private final LocalDateTime accessTokenExpiredAt;
+    private final Instant accessTokenExpiredAt;
     private final String refreshToken;
-    private final LocalDateTime refreshTokenExpiredAt;
+    private final Instant refreshTokenExpiredAt;
     private final Role role;
 }

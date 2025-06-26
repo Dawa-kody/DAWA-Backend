@@ -3,15 +3,13 @@ import com.kody.dawa.global.auth.AuthDetailsService;
 import com.kody.dawa.global.entity.JwtType;
 import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.dto.JwtDetails;
-import com.kody.dawa.global.util.DateUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import com.kody.dawa.global.exception.enums.ExceptionEnum;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 
@@ -27,8 +25,7 @@ public class JwtProvider {
     }
 
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String resolvedToken = resolveToken(token);
-        Claims payload = getPayload(resolvedToken, JwtType.ACCESS_TOKEN);
+        Claims payload = getPayload(token, JwtType.ACCESS_TOKEN);
 
         UserDetails userDetails = authDetailsService.loadUserByUsername(payload.getSubject());
 
@@ -42,13 +39,6 @@ public class JwtProvider {
         } catch (HttpException e) {
             return false;
         }
-    }
-
-    public String resolveToken(String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
-            return null;
-        }
-        return token.substring(7);
     }
 
     public String getIdByRefreshToken(String refreshToken) {
@@ -90,7 +80,7 @@ public class JwtProvider {
                 ? jwtProperties.getAccessTokenExpires()
                 : jwtProperties.getRefreshTokenExpires();
 
-        LocalDateTime expiredAt = LocalDateTime.now().plus(Duration.ofMillis(tokenExpires));
+        Instant expiredAt = Instant.now().plusMillis(tokenExpires);
 
         String tokenKey = jwtType == JwtType.ACCESS_TOKEN
                 ? jwtProperties.getAccessTokenKey()
@@ -103,8 +93,8 @@ public class JwtProvider {
                 .builder()
                 .subject(String.valueOf(id))
                 .signWith(signingKey)
-                .issuedAt(new Date())
-                .expiration(DateUtil.toDate(expiredAt))
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(expiredAt))
                 .compact();
 
         return new JwtDetails(token, expiredAt);

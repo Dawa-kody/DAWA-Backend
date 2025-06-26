@@ -3,13 +3,13 @@ package com.kody.dawa.domain.auth.presentation.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @AllArgsConstructor
 public class ReissueTokenResponse {
     private final String accessToken;
-    private final LocalDateTime accessTokenExpiredAt;
+    private final Instant accessTokenExpiredAt;
     private final String refreshToken;
-    private final LocalDateTime refreshTokenExpiredAt;
+    private final Instant refreshTokenExpiredAt;
 }

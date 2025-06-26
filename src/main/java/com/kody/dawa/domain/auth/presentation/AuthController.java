@@ -4,9 +4,12 @@ import com.kody.dawa.domain.auth.presentation.dto.request.*;
 import com.kody.dawa.domain.auth.presentation.dto.response.ReissueTokenResponse;
 import com.kody.dawa.domain.auth.presentation.dto.response.SignInResponse;
 import com.kody.dawa.domain.auth.service.*;
+import com.kody.dawa.global.security.cookie.AddTokenCookie;
 import com.kody.dawa.global.security.jwt.JwtProvider;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +20,6 @@ public class AuthController {
     private final ReissueTokenService reissueTokenService;
     private final SigninService signinService;
     private final SignupService signupStudentService;
-    private final JwtProvider jwtProvider;
     private final PasswordChangeService passwordChangeService;
 
     @PostMapping("/password/change/email/send")
@@ -41,14 +43,24 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
-    public ReissueTokenResponse reissueToken(@RequestHeader("Refresh-Token") String refreshHeader) {
-        String refreshToken = jwtProvider.resolveToken(refreshHeader);
-        return reissueTokenService.execute(refreshToken);
+    public void reissueToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
+                                             HttpServletResponse response) {
+        ReissueTokenResponse reissueTokenResponse = reissueTokenService.execute(refreshToken);
+
+        AddTokenCookie.addTokenCookies(response,
+                reissueTokenResponse.getAccessToken(), reissueTokenResponse.getAccessTokenExpiredAt(),
+                reissueTokenResponse.getRefreshToken(), reissueTokenResponse.getRefreshTokenExpiredAt());
     }
 
     @PostMapping("/signin")
-    public SignInResponse signIn(@RequestBody @Valid SigninRequest request) {
-        return signinService.execute(request);
+    public ResponseEntity<SignInResponse> signIn(@RequestBody @Valid SigninRequest request, HttpServletResponse response) {
+        SignInResponse signInResponse = signinService.execute(request);
+
+        AddTokenCookie.addTokenCookies(response,
+                signInResponse.getAccessToken(), signInResponse.getAccessTokenExpiredAt(),
+                signInResponse.getRefreshToken(), signInResponse.getRefreshTokenExpiredAt());
+
+        return ResponseEntity.ok(signInResponse);
     }
 
     @PostMapping("/signup")

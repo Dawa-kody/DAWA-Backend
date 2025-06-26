@@ -1,13 +1,13 @@
 package com.kody.dawa.global.security.jwt.dto;
 
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 
 public class JwtDetails {
-
     private final String token;
-    private final LocalDateTime expiredAt;
+    private final Instant expiredAt;
 
-    public JwtDetails(String token, LocalDateTime expiredAt) {
+    public JwtDetails(String token, Instant expiredAt) {
         this.token = token;
         this.expiredAt = expiredAt;
     }
@@ -16,7 +16,7 @@ public class JwtDetails {
         return token;
     }
 
-    public LocalDateTime getExpiredAt() {
+    public Instant getExpiredAt() {
         return expiredAt;
     }
 }
