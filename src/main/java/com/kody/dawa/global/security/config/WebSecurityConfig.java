@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -54,10 +56,14 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.gsm-dawa.com"));
-        config.setAllowedMethods(List.of("*"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("*"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.gsm-dawa.com", "https://guiding-fully-gecko.ngrok-free.app"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList(
+                "Authorization", "Content-Type",
+                "ngrok-skip-browser-warning", "CF-Access-Client-Id", "CF-Access-Client-Secret"
+        ));
+        config.setExposedHeaders(List.of("Set-Cookie","Content-Disposition", "Content-Type", "Cache-Control"));
+        config.setAllowCredentials(true);
         config.setMaxAge(86400L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

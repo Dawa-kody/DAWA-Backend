@@ -1,11 +1,9 @@
 package com.kody.dawa.domain.auth.presentation;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.*;
-import com.kody.dawa.domain.auth.presentation.dto.response.ReissueTokenResponse;
 import com.kody.dawa.domain.auth.presentation.dto.response.SignInResponse;
 import com.kody.dawa.domain.auth.service.*;
-import com.kody.dawa.global.security.cookie.AddTokenCookie;
-import com.kody.dawa.global.security.jwt.JwtProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,25 +40,16 @@ public class AuthController {
         emailVerifyService.emailVerify(request);
     }
 
-    @PostMapping("/reissue")
-    public void reissueToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
-                                             HttpServletResponse response) {
-        ReissueTokenResponse reissueTokenResponse = reissueTokenService.execute(refreshToken);
-
-        AddTokenCookie.addTokenCookies(response,
-                reissueTokenResponse.getAccessToken(), reissueTokenResponse.getAccessTokenExpiredAt(),
-                reissueTokenResponse.getRefreshToken(), reissueTokenResponse.getRefreshTokenExpiredAt());
-    }
-
     @PostMapping("/signin")
     public ResponseEntity<SignInResponse> signIn(@RequestBody @Valid SigninRequest request, HttpServletResponse response) {
-        SignInResponse signInResponse = signinService.execute(request);
-
-        AddTokenCookie.addTokenCookies(response,
-                signInResponse.getAccessToken(), signInResponse.getAccessTokenExpiredAt(),
-                signInResponse.getRefreshToken(), signInResponse.getRefreshTokenExpiredAt());
-
+        SignInResponse signInResponse = signinService.execute(request, response);
         return ResponseEntity.ok(signInResponse);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<String> refresh(HttpServletRequest request, HttpServletResponse response) {
+        reissueTokenService.execute(request, response);
+        return ResponseEntity.ok("Access Token 재발급 완료");
     }
 
     @PostMapping("/signup")

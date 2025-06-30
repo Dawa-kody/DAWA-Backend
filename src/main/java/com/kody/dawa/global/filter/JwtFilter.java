@@ -28,15 +28,20 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         if (token != null) {
-            Authentication authentication = jwtProvider.getAuthentication("Bearer " + token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                Authentication authentication = jwtProvider.getAuthentication("Bearer " + token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (Exception e) {
+                log.warn("JWT 인증 실패: {}", e.getMessage());
+                // 인증 실패해도 필터 체인은 계속 진행
+            }
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
-        String token = getTokenFromCookies(request.getCookies(), "accessToken");
+        String token = getTokenFromCookies(request.getCookies(), "access_token");  // 변경된 이름
         if (token == null) {
             String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -56,3 +61,4 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
