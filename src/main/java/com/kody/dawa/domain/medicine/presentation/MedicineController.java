@@ -15,7 +15,7 @@ public class MedicineController {
 
     private final MedicineService medicineService;
 
-    @PostMapping("/insert")
+    @PostMapping("/insert") //admin
     public ResponseEntity<?> insert (@Valid @RequestBody MedicineRequest request) {
         try {
             return ResponseEntity.ok(medicineService.createMedicine(request));
@@ -25,7 +25,7 @@ public class MedicineController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update") //admin
     public ResponseEntity<?> update (@Valid @RequestBody MedicineUpdateRequest request) {
         try {
             return ResponseEntity.ok(medicineService.updateMedicine(request));
@@ -35,7 +35,7 @@ public class MedicineController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}") //admin
     public ResponseEntity<?> delete (@PathVariable Long id) {
         try{
             medicineService.deleteMedicine(id);
@@ -46,7 +46,7 @@ public class MedicineController {
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get") //admin
     public ResponseEntity<?> get () {
         try{
             return ResponseEntity.ok(medicineService.getAllMedicine());

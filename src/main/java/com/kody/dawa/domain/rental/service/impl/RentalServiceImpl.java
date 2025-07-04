@@ -84,7 +84,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     public void rentalCancel(Long id) {
-        Rental rental =rentalRepository.findById(id)
+        Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("없는 요청입니다."));
         rentalRepository.delete(rental);
     }

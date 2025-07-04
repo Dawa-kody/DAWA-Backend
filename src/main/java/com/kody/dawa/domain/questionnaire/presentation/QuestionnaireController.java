@@ -19,29 +19,29 @@ import java.util.List;
 public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
-    @PostMapping("/write")
+    @PostMapping("/write") //admin
     public void createQuestionnaire(@RequestBody QuestionnaireRequest request) {
         questionnaireService.createQuestionnaire(request);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete") //admin
     public void deleteQuestionnaire(@RequestBody QuestionnaireDeleteRequest request) {
         questionnaireService.deleteQuestionnaire(request);
     }
 
-    @GetMapping("/date")
+    @GetMapping("/date") //admin
     public ResponseEntity<QuestionnaireStatisticsResponse> getQuestionnairesByYearMonthDay(@RequestParam(required = false) String yearMonthDay) {
         QuestionnaireStatisticsResponse response = questionnaireService.getQuestionnairesByYearMonthDay(yearMonthDay);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/studentRecord/{id}")
+    @GetMapping("/studentRecord/{id}") //admin
     public ResponseEntity<List<StudentRecordResponse>> recordStudent(@PathVariable Long id) {
         List<StudentRecordResponse> response = questionnaireService.recordStudent(id);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/search")
+    @PostMapping("/search") //admin
     public ResponseEntity<List<StudentSearchResponse>> searchStudent(
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String schoolNumber) {

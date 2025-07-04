@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class BedController {
     private final BedService bedService;
 
-    @PostMapping
+    @PostMapping //admin
     public ResponseEntity<Void> bedSetting(@RequestBody BedRequest request) {
         bedService.bedSetting(request);
         return ResponseEntity.ok().build();

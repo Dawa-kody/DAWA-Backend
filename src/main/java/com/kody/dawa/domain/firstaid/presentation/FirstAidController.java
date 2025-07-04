@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FirstAidController {
     private final FirstAidService firstAidService;
-    @PostMapping
+    @PostMapping //admin
     public void createFirstAid(@RequestBody FirstAidRequest request) {
         firstAidService.createFirstAid(request);
     }

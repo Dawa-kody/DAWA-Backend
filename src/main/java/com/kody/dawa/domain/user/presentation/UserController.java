@@ -19,13 +19,13 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/batch")
+    @PostMapping("/batch") //admin
     public ResponseEntity<String> registerUsers(@RequestBody @Valid List<UserRegisterRequest> requests) {
         userService.registerUsers(requests);
         return ResponseEntity.status(HttpStatus.CREATED).body("사용자 등록 성공");
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users") //admin
     public ResponseEntity<List<UserResponse>> getUsers(
             @RequestParam(required = false) List<String> classes,
             @RequestParam(required = false) String name
@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") //admin
     public ResponseEntity<String> updateUser(
             @PathVariable Long id,
             @RequestBody @Valid UserUpdateRequest request) {
@@ -42,12 +42,12 @@ public class UserController {
         return ResponseEntity.ok("사용자 수정 성공");
     }
 
-    @PostMapping("/healthissues/{schoolNumber}")
+    @PostMapping("/healthissues/{schoolNumber}") //admin
     public ResponseEntity<UserHealthIssueDetailResponse> getUserHealthIssues(@PathVariable String schoolNumber) {
         UserHealthIssueDetailResponse response = userService.getHealthIssueDetail(schoolNumber);
         return ResponseEntity.ok(response);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") //admin
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();

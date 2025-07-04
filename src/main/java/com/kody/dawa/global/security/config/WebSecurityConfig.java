@@ -6,6 +6,7 @@ import com.kody.dawa.global.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +38,42 @@ public class WebSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
+                                .requestMatchers(HttpMethod.POST, "/bed").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/bed").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/firstaid").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/firstaid/**").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/medicine/insert").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.PUT, "/medicine/update").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.DELETE, "/medicine/delete/**").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/medicine/get").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.POST, "/notice").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/notice/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/notice/**").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.POST, "/questionnaire/write").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.DELETE, "/questionnaire/delete").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/questionnaire/date").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/questionnaire/studentRecord/**").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.POST, "/questionnaire/search").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.POST, "/rental/write").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.PUT, "/rental/{id}").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/rental/allRental").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/rental/rentalAccept").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.PUT, "/rental/rentalAccept/**").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.DELETE, "/rental/rentalCancel/**").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.POST, "/rental/request").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/rental").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/user/batch").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/user/users").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.PUT, "/user/{id}").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.POST, "/user/healthissues/**").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.DELETE, "/user/{id}").hasRole("TEACHER")
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement((sessionManagement) ->
@@ -56,7 +93,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.gsm-dawa.com", "https://guiding-fully-gecko.ngrok-free.app"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://www.gsm-dawa.com"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList(
                 "Authorization", "Content-Type",

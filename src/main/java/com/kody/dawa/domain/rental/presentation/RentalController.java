@@ -18,7 +18,7 @@ import java.util.List;
 public class RentalController {
     private final RentalService rentalService;
 
-    @PostMapping("/write")
+    @PostMapping("/write") //admin
     public void createRental(@RequestBody RentalRequest request) {
         rentalService.createRental(request);
     }
@@ -28,7 +28,7 @@ public class RentalController {
         rentalService.createStudentRental(request);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") //admin
     public void rentalCompleted(@PathVariable Long id) {
         rentalService.rentalCompleted(id);
     }
@@ -38,22 +38,22 @@ public class RentalController {
         return rentalService.getMyRentals();
     }
 
-    @GetMapping("/allRental")
+    @GetMapping("/allRental") //admin
     public List<AllRentalResponse> getAllRentals() {
         return rentalService.getAllRentals();
     }
 
-    @GetMapping("/rentalAccept")
+    @GetMapping("/rentalAccept") //admin
     public List<RentalAcceptResponse> getRentalAccept() {
         return rentalService.getRentalAccept();
     }
 
-    @PutMapping("/rentalAccept/{id}")
+    @PutMapping("/rentalAccept/{id}") //admin
     public void rentalAccepted(@PathVariable Long id, @RequestBody @Valid RentalAcceptedRequest request) {
         rentalService.rentalAccepted(id, request);
     }
 
-    @DeleteMapping("/rentalCancel/{id}")
+    @DeleteMapping("/rentalCancel/{id}") //admin
     public void rentalCancel(@PathVariable Long id) {
         rentalService.rentalCancel(id);
     }

@@ -17,7 +17,7 @@ import java.util.List;
 public class NoticeController {
     private final NoticeService noticeService;
 
-    @PostMapping
+    @PostMapping //admin
     public ResponseEntity<Void> writeNotice(@RequestBody @Valid NoticeWriteRequest request) {
         noticeService.writeNotice(request);
         return ResponseEntity.ok().build();
@@ -33,7 +33,7 @@ public class NoticeController {
         return ResponseEntity.ok(noticeService.getNoticeById(id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") //admin
     public ResponseEntity<Void> deleteNotice(@PathVariable Long id) {
         noticeService.deleteNotice(id);
         return ResponseEntity.noContent().build();
