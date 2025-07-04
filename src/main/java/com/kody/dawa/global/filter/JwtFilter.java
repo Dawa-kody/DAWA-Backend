@@ -29,11 +29,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                Authentication authentication = jwtProvider.getAuthentication("Bearer " + token);
+                Authentication authentication = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                String tokenRole = jwtProvider.getRoleFromToken(token);
+
+                String cookieRole = getRoleFromCookies(request);
+
+                if (cookieRole == null || !cookieRole.equals(tokenRole)) {
+                    log.warn("역할 불일치 - 쿠키 ROLE: {}, 어세스 토큰 ROLE: {}", cookieRole, tokenRole);
+                    throw new IllegalStateException("클라이언트의 role 쿠키 값이 JWT의 role 정보와 일치하지 않습니다." + tokenRole);
+                }
+
             } catch (Exception e) {
                 log.warn("JWT 인증 실패: {}", e.getMessage());
-                // 인증 실패해도 필터 체인은 계속 진행
+                throw e;
             }
         }
 
@@ -41,24 +51,34 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private String resolveToken(HttpServletRequest request) {
-        String token = getTokenFromCookies(request.getCookies(), "access_token");  // 변경된 이름
-        if (token == null) {
-            String authHeader = request.getHeader("Authorization");
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                token = authHeader.substring(7);
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
-        return token;
+
+        return null;
     }
 
-    private String getTokenFromCookies(Cookie[] cookies, String name) {
-        if (cookies == null) return null;
-        for (Cookie cookie : cookies) {
-            if (name.equals(cookie.getName())) {
-                return cookie.getValue();
+    private String getRoleFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("role".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;
     }
 }
+
 

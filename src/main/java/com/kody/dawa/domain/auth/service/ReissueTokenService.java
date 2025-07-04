@@ -1,8 +1,6 @@
 package com.kody.dawa.domain.auth.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import com.kody.dawa.domain.auth.presentation.dto.response.ReissueTokenResponse;
 public interface ReissueTokenService {
-    void execute(HttpServletRequest request, HttpServletResponse response);
+    ReissueTokenResponse execute(String resolveRefreshToken);
 }

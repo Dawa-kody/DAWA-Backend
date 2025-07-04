@@ -1,8 +1,10 @@
 package com.kody.dawa.domain.auth.presentation;
 
 import com.kody.dawa.domain.auth.presentation.dto.request.*;
+import com.kody.dawa.domain.auth.presentation.dto.response.ReissueTokenResponse;
 import com.kody.dawa.domain.auth.presentation.dto.response.SignInResponse;
 import com.kody.dawa.domain.auth.service.*;
+import com.kody.dawa.global.security.jwt.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,7 +19,8 @@ public class AuthController {
     private final EmailVerifyService emailVerifyService;
     private final ReissueTokenService reissueTokenService;
     private final SigninService signinService;
-    private final SignupService signupStudentService;
+    private final SignupService signupService;
+    private final JwtProvider jwtProvider;
     private final PasswordChangeService passwordChangeService;
 
     @PostMapping("/password/change/email/send")
@@ -41,19 +44,19 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SignInResponse> signIn(@RequestBody @Valid SigninRequest request, HttpServletResponse response) {
-        SignInResponse signInResponse = signinService.execute(request, response);
+    public ResponseEntity<SignInResponse> signIn(@RequestBody @Valid SigninRequest request) {
+        SignInResponse signInResponse = signinService.execute(request);
         return ResponseEntity.ok(signInResponse);
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<String> refresh(HttpServletRequest request, HttpServletResponse response) {
-        reissueTokenService.execute(request, response);
-        return ResponseEntity.ok("Access Token 재발급 완료");
+    public ReissueTokenResponse reissueToken(@RequestHeader("Refresh-Token") String refreshHeader) {
+        String refreshToken = jwtProvider.resolveToken(refreshHeader);
+        return reissueTokenService.execute(refreshToken);
     }
 
     @PostMapping("/signup")
     public void signup(@RequestBody @Valid SignupRequest request) {
-        signupStudentService.signup(request);
+        signupService.signup(request);
     }
 }

@@ -1,10 +1,13 @@
 package com.kody.dawa.global.security.jwt;
+import com.kody.dawa.domain.user.enums.Role;
 import com.kody.dawa.global.auth.AuthDetailsService;
 import com.kody.dawa.global.entity.JwtType;
 import com.kody.dawa.global.exception.HttpException;
 import com.kody.dawa.global.security.jwt.dto.JwtDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -41,6 +44,13 @@ public class JwtProvider {
         }
     }
 
+    public String resolveToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
+        }
+        return token.substring(7);
+    }
+
     public String getIdByRefreshToken(String refreshToken) {
         return getPayload(refreshToken, JwtType.REFRESH_TOKEN).getSubject();
     }
@@ -75,7 +85,12 @@ public class JwtProvider {
         }
     }
 
-    public JwtDetails generateToken(Long id, JwtType jwtType) {
+    public String getRoleFromToken(String token) {
+        Claims payload = getPayload(token, JwtType.ACCESS_TOKEN);
+        return payload.get("role", String.class);
+    }
+
+    public JwtDetails generateToken(Long id, Role role, JwtType jwtType) {
         long tokenExpires = jwtType == JwtType.ACCESS_TOKEN
                 ? jwtProperties.getAccessTokenExpires()
                 : jwtProperties.getRefreshTokenExpires();
@@ -89,14 +104,18 @@ public class JwtProvider {
         byte[] keyBytes = Base64.getEncoder().encode(tokenKey.getBytes());
         var signingKey = Keys.hmacShaKeyFor(keyBytes);
 
-        String token = Jwts
+        JwtBuilder builder = Jwts
                 .builder()
                 .subject(String.valueOf(id))
                 .signWith(signingKey)
                 .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(expiredAt))
-                .compact();
+                .expiration(Date.from(expiredAt));
 
+        if (jwtType == JwtType.ACCESS_TOKEN) {
+            builder.claim("role", role);
+        }
+
+        String token = builder.compact();
         return new JwtDetails(token, expiredAt);
     }
 }
