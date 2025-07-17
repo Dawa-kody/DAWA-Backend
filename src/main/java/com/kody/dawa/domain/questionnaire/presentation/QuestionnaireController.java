@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/questionnaire")
+@RequestMapping("/api/questionnaire")
 @RestController
 @RequiredArgsConstructor
 public class QuestionnaireController {

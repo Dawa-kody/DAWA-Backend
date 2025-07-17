@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
-@RequestMapping("/mail")
+@RequestMapping("/api/mail")
 @RestController
 @RequiredArgsConstructor
 public class MailSseController {

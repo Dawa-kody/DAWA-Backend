@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/bed")
+@RequestMapping("/api/bed")
 @RestController
 @RequiredArgsConstructor
 public class BedController {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/firstaid")
+@RequestMapping("/api/firstaid")
 @RestController
 @RequiredArgsConstructor
 public class FirstAidController {
